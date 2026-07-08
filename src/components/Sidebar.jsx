@@ -1,9 +1,9 @@
 /**
- * Sidebar navigation — dynamic configurable EduOS-quality design.
- * Features: animated active indicator, user profile, dynamic modules config list.
+ * Sidebar navigation — dynamically filtered based on both active modules & role permissions.
  */
 import { NavLink } from 'react-router-dom'
 import { useEduOS } from '../core/EduOSContext.jsx'
+import { useRBAC } from '../rbac/RBACContext.jsx'
 import {
   LayoutDashboard,
   GraduationCap,
@@ -30,96 +30,97 @@ import {
   Bus,
   CalendarDays,
   Building,
-  HelpCircle
+  HelpCircle,
+  Shield
 } from 'lucide-react'
 
-// Dynamic mapping of links to their parent operating system modules
+// Dynamic mapping of links to their parent operating system modules & required permissions
 const moduleSections = [
   {
     module: 'Academics',
     label: '📚 Academic Management',
     items: [
-      { to: '/students', label: 'Students', icon: GraduationCap },
-      { to: '/teachers', label: 'Teachers', icon: Users },
-      { to: '/classes', label: 'Classes & Sections', icon: School },
-      { to: '/attendance', label: 'Attendance', icon: ClipboardCheck },
-      { to: '/exams', label: 'Exams & Results', icon: FileText },
-      { to: '/timetable', label: 'Timetable', icon: Calendar },
-      { to: '/academic/lesson-plans', label: 'Lesson Plans', icon: NotebookPen },
-      { to: '/academic/syllabus', label: 'Syllabus Planner', icon: CalendarRange },
-      { to: '/academic/assessments', label: 'Assessments', icon: ListChecks },
-      { to: '/academic/question-bank', label: 'Question Bank', icon: Database },
-      { to: '/academic/approvals', label: 'Approvals', icon: GitPullRequestArrow },
+      { to: '/students', label: 'Students', icon: GraduationCap, permission: 'student.view' },
+      { to: '/teachers', label: 'Teachers', icon: Users, permission: 'teacher.view' },
+      { to: '/classes', label: 'Classes & Sections', icon: School, permission: 'student.view' },
+      { to: '/attendance', label: 'Attendance', icon: ClipboardCheck, permission: 'student.view' },
+      { to: '/exams', label: 'Exams & Results', icon: FileText, permission: 'student.view' },
+      { to: '/timetable', label: 'Timetable', icon: Calendar, permission: 'student.view' },
+      { to: '/academic/lesson-plans', label: 'Lesson Plans', icon: NotebookPen, permission: 'lessonplan.create' },
+      { to: '/academic/syllabus', label: 'Syllabus Planner', icon: CalendarRange, permission: 'lessonplan.create' },
+      { to: '/academic/assessments', label: 'Assessments', icon: ListChecks, permission: 'assessment.create' },
+      { to: '/academic/question-bank', label: 'Question Bank', icon: Database, permission: 'assessment.create' },
+      { to: '/academic/approvals', label: 'Approvals', icon: GitPullRequestArrow, permission: 'lessonplan.approve' },
     ]
   },
   {
     module: 'Admissions',
     label: '🎯 Admissions',
     items: [
-      { to: '/admissions', label: 'Admissions Intake', icon: UserPlus }
+      { to: '/admissions', label: 'Admissions Intake', icon: UserPlus, permission: 'student.create' }
     ]
   },
   {
     module: 'Finance',
     label: '💼 Finance & Billing',
     items: [
-      { to: '/fees', label: 'Fees Management', icon: Wallet }
+      { to: '/fees', label: 'Fees Management', icon: Wallet, permission: 'fees.view' }
     ]
   },
   {
     module: 'HR',
     label: '👥 Human Resources',
     items: [
-      { to: '/hr', label: 'Staff Directory', icon: Briefcase }
+      { to: '/hr', label: 'Staff Directory', icon: Briefcase, permission: 'teacher.create' }
     ]
   },
   {
     module: 'Transport',
     label: '🚌 Transport',
     items: [
-      { to: '/transport', label: 'Bus Routing', icon: Bus }
+      { to: '/transport', label: 'Bus Routing', icon: Bus, permission: 'transport.view' }
     ]
   },
   {
     module: 'Events',
     label: '🗓️ Events',
     items: [
-      { to: '/events', label: 'School Events', icon: CalendarDays }
+      { to: '/events', label: 'School Events', icon: CalendarDays, permission: 'circulars.publish' }
     ]
   },
   {
     module: 'Sports',
     label: '🏆 Sports',
     items: [
-      { to: '/sports', label: 'Sports Activities', icon: Trophy }
+      { to: '/sports', label: 'Sports Activities', icon: Trophy, permission: 'notifications.send' }
     ]
   },
   {
     module: 'Facilities',
     label: '🏢 Facilities',
     items: [
-      { to: '/library', label: 'Library Management', icon: BookOpen }
+      { to: '/library', label: 'Library Management', icon: BookOpen, permission: 'student.view' }
     ]
   },
   {
     module: 'Support',
     label: '🛠️ Helpdesk & Support',
     items: [
-      { to: '/support', label: 'Help Desk', icon: HelpCircle }
+      { to: '/support', label: 'Help Desk', icon: HelpCircle, permission: 'tickets.create' }
     ]
   },
   {
     module: 'Communication',
     label: '🔔 Communication',
     items: [
-      { to: '/notifications', label: 'Notifications', icon: Bell }
+      { to: '/notifications', label: 'Notifications', icon: Bell, permission: 'notifications.send' }
     ]
   },
   {
     module: 'Analytics',
     label: '📊 Analytics Desk',
     items: [
-      { to: '/academic/analytics', label: 'Analytics & Coverage', icon: BarChart3 }
+      { to: '/academic/analytics', label: 'Analytics & Coverage', icon: BarChart3, permission: 'lessonplan.approve' }
     ]
   },
   {
@@ -130,6 +131,15 @@ const moduleSections = [
     ]
   }
 ]
+
+// Standalone System Control Links visible only to RBAC managers
+const securitySection = {
+  label: '🛡️ Security & Control',
+  items: [
+    { to: '/system/access', label: 'Access Control Matrix', icon: Shield, permission: 'rbac.view' },
+    { to: '/system/audit', label: 'Audit Trail Log', icon: FileText, permission: 'audit.view' }
+  ]
+}
 
 function NavItem({ to, label, icon: Icon, end, onClick }) {
   return (
@@ -151,6 +161,7 @@ function NavItem({ to, label, icon: Icon, end, onClick }) {
 
 export default function Sidebar({ isOpen, onClose }) {
   const { modules, institution, currentRole } = useEduOS()
+  const { hasPermission } = useRBAC()
 
   // Helper to check if a specific module name is enabled
   const isModuleEnabled = (moduleName) => {
@@ -190,18 +201,51 @@ export default function Sidebar({ isOpen, onClose }) {
           <span className="sidebar__section-label">Main Menu</span>
           <NavItem to="/" label="Dashboard" icon={LayoutDashboard} end={true} onClick={onClose} />
 
-          {/* Dynamically generated sections based on enabled modules configuration */}
+          {/* Dynamically generated sections based on enabled modules & permissions */}
           {moduleSections.map(section => {
             if (!isModuleEnabled(section.module)) return null
+            
+            // Filter section items based on permission
+            const visibleItems = section.items.filter(item => {
+              if (item.permission && !hasPermission(item.permission)) {
+                return false
+              }
+              return true
+            })
+
+            // If no items are visible under this section, hide the section entirely
+            if (visibleItems.length === 0) return null
+
             return (
               <div key={section.module} style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="sidebar__section-label">{section.label}</span>
-                {section.items.map((item) => (
+                {visibleItems.map((item) => (
                   <NavItem key={item.to} {...item} onClick={onClose} />
                 ))}
               </div>
             )
           })}
+
+          {/* Platform Security controls */}
+          {(() => {
+            const visibleSecurityItems = securitySection.items.filter(item => {
+              if (item.permission && !hasPermission(item.permission)) {
+                return false
+              }
+              return true
+            })
+
+            if (visibleSecurityItems.length === 0) return null
+
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span className="sidebar__section-label">{securitySection.label}</span>
+                {visibleSecurityItems.map((item) => (
+                  <NavItem key={item.to} {...item} onClick={onClose} />
+                ))}
+              </div>
+            )
+          })()}
         </nav>
 
         {/* User profile footer showing currently switched persona */}

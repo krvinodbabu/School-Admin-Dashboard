@@ -28,6 +28,10 @@ const QuestionBank = lazy(() => import('./pages/academic-planning/QuestionBank.j
 const ApprovalWorkflow = lazy(() => import('./pages/academic-planning/ApprovalWorkflow.jsx'))
 const AnalyticsCoverage = lazy(() => import('./pages/academic-planning/AnalyticsCoverage.jsx'))
 
+/* Access & Platform Security */
+const AccessManagement = lazy(() => import('./access-management/AccessManagement.jsx'))
+const AuditLogs = lazy(() => import('./access-management/AuditLogs.jsx'))
+
 function App() {
   return (
     <Suspense fallback={
@@ -57,6 +61,10 @@ function App() {
           <Route path="transport" element={<ModulePlaceholder name="Transport" />} />
           <Route path="events" element={<ModulePlaceholder name="Events" />} />
           <Route path="support" element={<ModulePlaceholder name="Support" />} />
+
+          {/* Platform Access control management */}
+          <Route path="system/access" element={<AccessManagement />} />
+          <Route path="system/audit" element={<AuditLogs />} />
 
           {/* Academic Planning */}
           <Route path="academic/lesson-plans" element={<WeeklyLessonPlans />} />

@@ -21,6 +21,7 @@ import { getDashboardData } from '../services/dataService.js'
 import { formatCurrency, formatDate } from '../utils/helpers.js'
 import { useEduOS } from '../core/EduOSContext.jsx'
 import RoleDashboardPlaceholders from '../roles/RoleDashboardPlaceholders.jsx'
+import PermissionGuard from '../guards/PermissionGuard.jsx'
 
 function getGreeting() {
   const h = new Date().getHours()
@@ -79,44 +80,58 @@ export default function Dashboard() {
       {/* ── Role Based Placeholders Panel ── */}
       <RoleDashboardPlaceholders />
 
-
       {/* ── KPI Stats ── */}
       <div className="stats-grid">
-        <StatCard
-          title="Total Students"
-          value={stats.totalStudents.toLocaleString()}
-          icon={GraduationCap}
-          color="blue"
-          trend="+12 this month"
-        />
-        <StatCard
-          title="Total Teachers"
-          value={stats.totalTeachers}
-          icon={Users}
-          color="purple"
-          trend="2 new hires"
-        />
-        <StatCard
-          title="Pending Fees"
-          value={formatCurrency(stats.pendingFees)}
-          icon={Wallet}
-          color="amber"
-          trend="34 students"
-        />
-        <StatCard
-          title="Attendance Rate"
-          value={`${stats.attendancePercentage}%`}
-          icon={ClipboardCheck}
-          color="green"
-          trend="+1.2% vs last week"
-        />
-        <StatCard
-          title="Upcoming Exams"
-          value={stats.upcomingExams}
-          icon={FileText}
-          color="red"
-          trend="Next: Jul 15"
-        />
+        <PermissionGuard permission="student.view">
+          <StatCard
+            title="Total Students"
+            value={stats.totalStudents.toLocaleString()}
+            icon={GraduationCap}
+            color="blue"
+            trend="+12 this month"
+          />
+        </PermissionGuard>
+
+        <PermissionGuard permission="teacher.view">
+          <StatCard
+            title="Total Teachers"
+            value={stats.totalTeachers}
+            icon={Users}
+            color="purple"
+            trend="2 new hires"
+          />
+        </PermissionGuard>
+
+        <PermissionGuard permission="fees.view">
+          <StatCard
+            title="Pending Fees"
+            value={formatCurrency(stats.pendingFees)}
+            icon={Wallet}
+            color="amber"
+            trend="34 students"
+          />
+        </PermissionGuard>
+
+        <PermissionGuard permission="student.view">
+          <StatCard
+            title="Attendance Rate"
+            value={`${stats.attendancePercentage}%`}
+            icon={ClipboardCheck}
+            color="green"
+            trend="+1.2% vs last week"
+          />
+        </PermissionGuard>
+
+        <PermissionGuard permission="student.view">
+          <StatCard
+            title="Upcoming Exams"
+            value={stats.upcomingExams}
+            icon={FileText}
+            color="red"
+            trend="Next: Jul 15"
+          />
+        </PermissionGuard>
+
         <StatCard
           title="Notifications"
           value={stats.recentNotifications}
@@ -128,42 +143,48 @@ export default function Dashboard() {
 
       {/* ── Charts Row ── */}
       <div className="dashboard-grid">
-        <Card
-          title="Attendance Trend"
-          subtitle="Monthly attendance percentage — last 6 months"
-          actionLabel="Full report →"
-        >
-          <BarChart data={attendanceTrend} valueKey="percentage" labelKey="month" />
-        </Card>
+        <PermissionGuard permission="student.view">
+          <Card
+            title="Attendance Trend"
+            subtitle="Monthly attendance percentage — last 6 months"
+            actionLabel="Full report →"
+          >
+            <BarChart data={attendanceTrend} valueKey="percentage" labelKey="month" />
+          </Card>
+        </PermissionGuard>
 
-        <Card
-          title="Fee Collection Status"
-          subtitle="Distribution of paid, pending, and overdue fees"
-        >
-          <DonutChart data={feeDistribution} />
-        </Card>
+        <PermissionGuard permission="fees.view">
+          <Card
+            title="Fee Collection Status"
+            subtitle="Distribution of paid, pending, and overdue fees"
+          >
+            <DonutChart data={feeDistribution} />
+          </Card>
+        </PermissionGuard>
 
         {/* Upcoming Exams */}
-        <Card
-          title="Upcoming Exams"
-          subtitle={`${upcomingExams.length} scheduled this month`}
-          actionLabel="View all"
-        >
-          <ul className="list">
-            {upcomingExams.map((exam) => (
-              <li key={exam.id} className="list__item">
-                <div>
-                  <strong>{exam.name}</strong>
-                  <span className="list__meta">
-                    <BookOpen size={11} style={{ display: 'inline', marginRight: 4 }} />
-                    {exam.classes}
-                  </span>
-                </div>
-                <span className="list__date">{formatDate(exam.date)}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
+        <PermissionGuard permission="student.view">
+          <Card
+            title="Upcoming Exams"
+            subtitle={`${upcomingExams.length} scheduled this month`}
+            actionLabel="View all"
+          >
+            <ul className="list">
+              {upcomingExams.map((exam) => (
+                <li key={exam.id} className="list__item">
+                  <div>
+                    <strong>{exam.name}</strong>
+                    <span className="list__meta">
+                      <BookOpen size={11} style={{ display: 'inline', marginRight: 4 }} />
+                      {exam.classes}
+                    </span>
+                  </div>
+                  <span className="list__date">{formatDate(exam.date)}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </PermissionGuard>
 
         {/* Recent Notifications */}
         <Card

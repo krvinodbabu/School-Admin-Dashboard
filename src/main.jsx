@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext.jsx'
 import { EduOSProvider } from './core/EduOSContext.jsx'
+import { RBACProvider } from './rbac/RBACContext.jsx'
 import App from './App.jsx'
 import './index.css'
 
@@ -15,7 +16,9 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <ThemeProvider>
         <EduOSProvider>
-          <App />
+          <RBACProvider>
+            <App />
+          </RBACProvider>
         </EduOSProvider>
       </ThemeProvider>
     </BrowserRouter>
