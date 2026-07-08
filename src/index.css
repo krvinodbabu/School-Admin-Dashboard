@@ -2807,3 +2807,434 @@ html, body, #root, .app-layout { max-width: 100%; overflow-x: hidden; }
   .ap-wf-kpis { flex-wrap: wrap; }
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   EduOS PLATFORM FOUNDATION STYLES
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Onboarding Screen ───────────────────────────────────────────── */
+.onboarding-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--color-bg-app);
+  padding: 1.5rem;
+  animation: fadeIn 0.4s ease;
+}
+
+.onboarding-card {
+  width: 100%;
+  max-width: 580px;
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.onboarding-card__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.onboarding-card__logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--gradient-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.onboarding-card__title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0 0 0.5rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.onboarding-card__subtitle {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.onboarding-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.onboarding-error {
+  background: var(--color-red-bg);
+  color: var(--color-red-text);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.onboarding-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.onboarding-type-btn {
+  padding: 0.625rem 0.875rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-family: 'Inter', sans-serif;
+  text-align: left;
+}
+
+.onboarding-type-btn:hover {
+  background: var(--color-surface-3);
+  color: var(--color-text);
+}
+
+.onboarding-type-btn--active {
+  background: var(--color-brand-bg) !important;
+  color: var(--color-brand) !important;
+  border-color: var(--color-brand) !important;
+}
+
+.onboarding-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 1rem;
+}
+
+.onboarding-input,
+.onboarding-select {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.88rem;
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  transition: border-color var(--transition-base);
+}
+
+.onboarding-input:focus,
+.onboarding-select:focus {
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.onboarding-submit {
+  width: 100%;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+}
+
+.onboarding-footer {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.72rem;
+  color: var(--color-text-subtle);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  line-height: 1.4;
+}
+
+.onboarding-footer-icon {
+  flex-shrink: 0;
+  color: var(--color-brand);
+}
+
+/* ── Institution Selector (TopNav component) ────────────────────── */
+.institution-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.35rem 0.75rem;
+  max-width: 280px;
+  transition: all var(--transition-base);
+}
+
+.institution-selector:hover {
+  border-color: var(--color-text-subtle);
+  background: var(--color-surface-3);
+}
+
+.institution-selector__icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--gradient-brand);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.institution-selector__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.institution-selector__name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.institution-selector__meta {
+  display: flex;
+  align-items: center;
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+}
+
+.institution-selector__divider {
+  margin: 0 0.2rem;
+  opacity: 0.5;
+}
+
+.institution-selector__reset-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+}
+
+.institution-selector__reset-btn:hover {
+  background: var(--color-surface-3);
+  color: var(--color-text);
+}
+
+/* ── Role Selector (TopNav component) ───────────────────────────── */
+.role-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.35rem 0.625rem;
+  height: 34px;
+  transition: all var(--transition-base);
+}
+
+.role-selector:focus-within {
+  border-color: var(--color-brand);
+}
+
+.role-selector__icon {
+  color: var(--color-brand);
+  flex-shrink: 0;
+}
+
+.role-selector__select {
+  border: none;
+  background: transparent;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text);
+  outline: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  padding-right: 0.5rem;
+}
+
+/* ── Role Placeholders (Dashboard top widgets) ──────────────────── */
+.role-placeholders {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  animation: fadeIn 0.3s ease;
+}
+
+.role-placeholders__header {
+  margin-bottom: 1rem;
+}
+
+.role-placeholders__title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0 0 0.15rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.role-placeholders__role-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.15rem 0.6rem;
+  background: var(--color-brand-bg);
+  color: var(--color-brand);
+  border-radius: 99px;
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.role-placeholders__subtitle {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.role-placeholders__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.role-placeholder-card {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.role-placeholder-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.role-placeholder-card--blue::before   { background: var(--color-blue); }
+.role-placeholder-card--green::before  { background: var(--color-green); }
+.role-placeholder-card--amber::before  { background: var(--color-amber); }
+.role-placeholder-card--red::before    { background: var(--color-red); }
+.role-placeholder-card--indigo::before { background: var(--color-indigo); }
+
+.role-placeholder-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+  background: var(--color-surface-3);
+}
+
+.role-placeholder-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.role-placeholder-card__text-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.role-placeholder-card__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.15rem;
+}
+
+.role-placeholder-card__value {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0 0 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.role-placeholder-card__sub {
+  font-size: 0.72rem;
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.role-placeholder-card__icon-wrapper {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-3);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.role-placeholder-card--blue .role-placeholder-card__icon-wrapper   { color: var(--color-blue); }
+.role-placeholder-card--green .role-placeholder-card__icon-wrapper  { color: var(--color-green); }
+.role-placeholder-card--amber .role-placeholder-card__icon-wrapper  { color: var(--color-amber); }
+.role-placeholder-card--red .role-placeholder-card__icon-wrapper    { color: var(--color-red); }
+.role-placeholder-card--indigo .role-placeholder-card__icon-wrapper { color: var(--color-indigo); }
+
+/* ── Mobile Layout Adjustments ────────────────────────────────────── */
+@media (max-width: 767px) {
+  .onboarding-card {
+    padding: 1.5rem;
+  }
+  
+  .onboarding-row {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  
+  .onboarding-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .role-placeholders__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .role-selector {
+    padding: 0.25rem 0.5rem;
+    height: 30px;
+  }
+  
+  .role-selector__select {
+    font-size: 0.7rem;
+  }
+}
+
+

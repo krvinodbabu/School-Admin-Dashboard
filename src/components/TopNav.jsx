@@ -3,6 +3,8 @@
  */
 import { Menu, Search, Bell, School, Sun, Moon } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext.jsx'
+import InstitutionSelector from './InstitutionSelector.jsx'
+import RoleSelector from './RoleSelector.jsx'
 
 export default function TopNav({ onMenuClick, title }) {
   const { theme, toggleTheme } = useTheme()
@@ -29,6 +31,11 @@ export default function TopNav({ onMenuClick, title }) {
 
         {/* Desktop page title */}
         <h2 className="topnav__title desktop-only">{title}</h2>
+        
+        {/* Desktop Institution Selector */}
+        <div className="desktop-only" style={{ marginLeft: '1rem' }}>
+          <InstitutionSelector />
+        </div>
       </div>
 
       {/* Search bar */}
@@ -44,6 +51,9 @@ export default function TopNav({ onMenuClick, title }) {
       </div>
 
       <div className="topnav__right">
+        {/* Persona Selector Dropdown */}
+        <RoleSelector />
+
         {/* Theme toggle */}
         <button
           type="button"
@@ -79,3 +89,4 @@ export default function TopNav({ onMenuClick, title }) {
     </header>
   )
 }
+

@@ -5,6 +5,7 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout.jsx'
+import ModulePlaceholder from './modules/ModulePlaceholder.jsx'
 
 const Dashboard = lazy(() => import('./pages/Dashboard.jsx'))
 const Students = lazy(() => import('./pages/Students.jsx'))
@@ -32,7 +33,7 @@ function App() {
     <Suspense fallback={
       <div className="loading-container">
         <div className="loading-spinner"></div>
-        <p>Loading EduAdmin...</p>
+        <p>Loading EduOS...</p>
       </div>
     }>
       <Routes>
@@ -50,6 +51,13 @@ function App() {
           <Route path="notifications" element={<Notifications />} />
           <Route path="settings" element={<Settings />} />
 
+          {/* New operating system module placeholders */}
+          <Route path="admissions" element={<ModulePlaceholder name="Admissions" />} />
+          <Route path="hr" element={<ModulePlaceholder name="HR" />} />
+          <Route path="transport" element={<ModulePlaceholder name="Transport" />} />
+          <Route path="events" element={<ModulePlaceholder name="Events" />} />
+          <Route path="support" element={<ModulePlaceholder name="Support" />} />
+
           {/* Academic Planning */}
           <Route path="academic/lesson-plans" element={<WeeklyLessonPlans />} />
           <Route path="academic/syllabus" element={<TermSyllabusPlanner />} />
@@ -64,3 +72,4 @@ function App() {
 }
 
 export default App
+

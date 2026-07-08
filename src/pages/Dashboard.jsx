@@ -19,6 +19,8 @@ import BarChart from '../components/BarChart.jsx'
 import DonutChart from '../components/DonutChart.jsx'
 import { getDashboardData } from '../services/dataService.js'
 import { formatCurrency, formatDate } from '../utils/helpers.js'
+import { useEduOS } from '../core/EduOSContext.jsx'
+import RoleDashboardPlaceholders from '../roles/RoleDashboardPlaceholders.jsx'
 
 function getGreeting() {
   const h = new Date().getHours()
@@ -36,21 +38,22 @@ function getTodayFormatted() {
 export default function Dashboard() {
   const { stats, attendanceTrend, feeDistribution, upcomingExams, recentNotifications } =
     getDashboardData()
+  const { institution, currentRole } = useEduOS()
 
   return (
-    <div className="page">
+    <div className="page animate-fadeIn">
 
       {/* ── Hero Banner ── */}
       <div className="dashboard-hero">
         <div className="dashboard-hero__eyebrow">
           <Sparkles size={11} />
-          Green Valley Public School · Academic Year 2025–26
+          {institution.name} · Academic Year {institution.academicYear}
         </div>
         <h1 className="dashboard-hero__title">
-          {getGreeting()}, Principal 👋
+          {getGreeting()}, {currentRole} 👋
         </h1>
         <p className="dashboard-hero__subtitle">
-          Here's what's happening across your school today. All systems operational.
+          Welcome to the {institution.type} Operating System portal for the {institution.campus}.
         </p>
         <div className="dashboard-hero__actions">
           <button type="button" className="btn btn--hero-secondary" id="dashboard-quick-report-btn">
@@ -72,6 +75,10 @@ export default function Dashboard() {
           {new Date().toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric' })}
         </div>
       </div>
+
+      {/* ── Role Based Placeholders Panel ── */}
+      <RoleDashboardPlaceholders />
+
 
       {/* ── KPI Stats ── */}
       <div className="stats-grid">

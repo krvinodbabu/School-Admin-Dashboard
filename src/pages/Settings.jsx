@@ -1,74 +1,147 @@
+import { useState } from 'react'
 import PageHeader from '../components/PageHeader.jsx'
 import Card from '../components/Card.jsx'
+import { useEduOS } from '../core/EduOSContext.jsx'
+import { Settings, Check, Sparkles } from 'lucide-react'
 
-export default function Settings() {
+export default function SettingsPage() {
+  const { institution, updateInstitution, modules, toggleModule } = useEduOS()
+  const [name, setName] = useState(institution.name)
+  const [campus, setCampus] = useState(institution.campus)
+  const [academicYear, setAcademicYear] = useState(institution.academicYear)
+  const [saveSuccess, setSaveSuccess] = useState(false)
+
+  const handleProfileSubmit = (e) => {
+    e.preventDefault()
+    updateInstitution({ name, campus, academicYear })
+    setSaveSuccess(true)
+    setTimeout(() => setSaveSuccess(false), 3000)
+  }
+
   return (
-    <div className="page">
-      <PageHeader title="Settings" subtitle="Configure school profile and system preferences" />
+    <div className="page animate-fadeIn">
+      <PageHeader 
+        title="Settings" 
+        subtitle="Configure school profile, academic year and dynamic system modules" 
+      />
 
       <div className="settings-grid">
-        <Card title="School Profile">
-          <form className="settings-form" onSubmit={(e) => e.preventDefault()}>
-            <label>
-              School Name
-              <input type="text" defaultValue="Green Valley Public School" />
+        {/* Profile Card */}
+        <Card title="Institution Profile" subtitle="Configure organization properties & details">
+          <form className="settings-form" onSubmit={handleProfileSubmit}>
+            {saveSuccess && (
+              <div style={{
+                background: 'var(--color-green-bg)',
+                color: 'var(--color-green-text)',
+                padding: '0.625rem 0.875rem',
+                borderRadius: 'var(--radius)',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                marginBottom: '1rem'
+              }}>
+                <Check size={14} /> Profile updated successfully!
+              </div>
+            )}
+            <label htmlFor="set-type">
+              Institution Type
+              <input 
+                type="text" 
+                id="set-type"
+                value={institution.type} 
+                disabled 
+                style={{ opacity: 0.6, cursor: 'not-allowed' }} 
+              />
             </label>
-            <label>
-              Address
-              <input type="text" defaultValue="123 Education Lane, Mumbai, Maharashtra" />
+            <label htmlFor="set-name">
+              Institution Name
+              <input 
+                type="text" 
+                id="set-name"
+                value={name} 
+                onChange={(e) => setName(e.target.value)} 
+              />
             </label>
-            <label>
-              Contact Email
-              <input type="email" defaultValue="admin@greenvalleyschool.edu" />
+            <label htmlFor="set-campus">
+              Campus / Branch
+              <input 
+                type="text" 
+                id="set-campus"
+                value={campus} 
+                onChange={(e) => setCampus(e.target.value)} 
+              />
             </label>
-            <label>
-              Phone
-              <input type="tel" defaultValue="+91 22 1234 5678" />
-            </label>
-            <button type="submit" className="btn btn--primary">Save Changes</button>
-          </form>
-        </Card>
-
-        <Card title="Academic Settings">
-          <form className="settings-form" onSubmit={(e) => e.preventDefault()}>
-            <label>
+            <label htmlFor="set-year">
               Academic Year
-              <select defaultValue="2025-26">
+              <select 
+                id="set-year"
+                value={academicYear} 
+                onChange={(e) => setAcademicYear(e.target.value)}
+              >
                 <option value="2025-26">2025–26</option>
                 <option value="2026-27">2026–27</option>
+                <option value="2027-28">2027–28</option>
               </select>
-            </label>
-            <label>
-              Grading System
-              <select defaultValue="percentage">
-                <option value="percentage">Percentage</option>
-                <option value="gpa">GPA</option>
-                <option value="letter">Letter Grade</option>
-              </select>
-            </label>
-            <label>
-              Attendance Threshold (%)
-              <input type="number" defaultValue="75" min="0" max="100" />
             </label>
             <button type="submit" className="btn btn--primary">Save Changes</button>
           </form>
         </Card>
 
-        <Card title="Notification Preferences">
+        {/* Modules Config Card */}
+        <Card title="EduOS Module Configuration" subtitle="Enable or disable modular sub-systems in real-time">
+          <div className="settings-modules-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem', lineHeight: '1.4' }}>
+              Toggling these modules will immediately dynamically generate/update sidebar navigation routes and platform layout visibility.
+            </p>
+            {modules.map((m) => (
+              <label 
+                key={m.name} 
+                className="checkbox-label"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.625rem',
+                  padding: '0.625rem 0.875rem',
+                  background: 'var(--color-surface-2)',
+                  borderRadius: 'var(--radius)',
+                  cursor: 'pointer',
+                  border: '1px solid var(--color-border)',
+                  transition: 'all var(--transition-base)'
+                }}
+              >
+                <input 
+                  type="checkbox" 
+                  checked={m.enabled} 
+                  onChange={() => toggleModule(m.name)} 
+                  style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                />
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--color-text)' }}>{m.label}</span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>Identifier: {m.name}</span>
+                </div>
+              </label>
+            ))}
+          </div>
+        </Card>
+
+        {/* Notification Preferences */}
+        <Card title="System Settings & Safety" subtitle="System notifications, API logs and security settings">
           <form className="settings-form" onSubmit={(e) => e.preventDefault()}>
             <label className="checkbox-label">
-              <input type="checkbox" defaultChecked /> Email notifications for fee reminders
+              <input type="checkbox" defaultChecked /> Email notifications for billing alerts
             </label>
             <label className="checkbox-label">
-              <input type="checkbox" defaultChecked /> SMS alerts for attendance
+              <input type="checkbox" defaultChecked /> Active SMS delivery gateway
             </label>
             <label className="checkbox-label">
-              <input type="checkbox" /> Push notifications for exam schedules
+              <input type="checkbox" /> Debug API log tracer
             </label>
             <label className="checkbox-label">
-              <input type="checkbox" defaultChecked /> Weekly summary reports
+              <input type="checkbox" defaultChecked /> Automated weekly analytics backups
             </label>
-            <button type="submit" className="btn btn--primary">Save Preferences</button>
+            <button type="submit" className="btn btn--primary">Save System Settings</button>
           </form>
         </Card>
       </div>
