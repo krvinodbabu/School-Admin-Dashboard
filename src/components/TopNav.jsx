@@ -1,33 +1,75 @@
-import { Menu, Search, Bell, School } from 'lucide-react'
+/**
+ * TopNav — glassmorphism header with theme toggle, search, notifications.
+ */
+import { Menu, Search, Bell, School, Sun, Moon } from 'lucide-react'
+import { useTheme } from '../contexts/ThemeContext.jsx'
 
 export default function TopNav({ onMenuClick, title }) {
+  const { theme, toggleTheme } = useTheme()
+
   return (
     <header className="topnav">
       <div className="topnav__left">
-        <button type="button" className="topnav__menu-btn" onClick={onMenuClick} aria-label="Open menu">
-          <Menu size={22} />
+        {/* Mobile hamburger */}
+        <button
+          type="button"
+          className="topnav__menu-btn"
+          onClick={onMenuClick}
+          aria-label="Open navigation menu"
+          id="topnav-menu-btn"
+        >
+          <Menu size={20} />
         </button>
-        
+
+        {/* Mobile brand (hidden on desktop via CSS) */}
         <div className="topnav__brand mobile-only">
-          <School size={20} className="topnav__brand-icon" />
+          <School size={18} className="topnav__brand-icon" />
           <span className="topnav__brand-name">EduAdmin</span>
         </div>
 
+        {/* Desktop page title */}
         <h2 className="topnav__title desktop-only">{title}</h2>
       </div>
 
+      {/* Search bar */}
       <div className="topnav__search desktop-only">
-        <Search size={18} className="topnav__search-icon" />
-        <input type="search" placeholder="Search students, teachers, classes…" className="topnav__search-input" />
+        <Search size={16} className="topnav__search-icon" aria-hidden="true" />
+        <input
+          type="search"
+          id="topnav-search"
+          placeholder="Search students, teachers, classes…"
+          className="topnav__search-input"
+          aria-label="Global search"
+        />
       </div>
 
       <div className="topnav__right">
-        <button type="button" className="topnav__icon-btn" aria-label="Notifications">
-          <Bell size={20} />
-          <span className="topnav__badge">3</span>
+        {/* Theme toggle */}
+        <button
+          type="button"
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          id="theme-toggle-btn"
+          title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+        >
+          {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
         </button>
-        <div className="topnav__profile">
-          <div className="topnav__avatar">AD</div>
+
+        {/* Notification bell */}
+        <button
+          type="button"
+          className="topnav__icon-btn"
+          aria-label="View notifications (3 unread)"
+          id="topnav-notifications-btn"
+        >
+          <Bell size={18} />
+          <span className="topnav__badge" aria-hidden="true">3</span>
+        </button>
+
+        {/* Profile chip */}
+        <div className="topnav__profile" role="button" tabIndex={0} aria-label="User profile" id="topnav-profile">
+          <div className="topnav__avatar" aria-hidden="true">AD</div>
           <div className="topnav__profile-info desktop-only">
             <span className="topnav__profile-name">Admin User</span>
             <span className="topnav__profile-role">Principal</span>
@@ -37,4 +79,3 @@ export default function TopNav({ onMenuClick, title }) {
     </header>
   )
 }
-
