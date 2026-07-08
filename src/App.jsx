@@ -19,6 +19,14 @@ const Sports = lazy(() => import('./pages/Sports.jsx'))
 const Notifications = lazy(() => import('./pages/Notifications.jsx'))
 const Settings = lazy(() => import('./pages/Settings.jsx'))
 
+/* Academic Planning */
+const WeeklyLessonPlans = lazy(() => import('./pages/academic-planning/WeeklyLessonPlans.jsx'))
+const TermSyllabusPlanner = lazy(() => import('./pages/academic-planning/TermSyllabusPlanner.jsx'))
+const AssessmentPlanner = lazy(() => import('./pages/academic-planning/AssessmentPlanner.jsx'))
+const QuestionBank = lazy(() => import('./pages/academic-planning/QuestionBank.jsx'))
+const ApprovalWorkflow = lazy(() => import('./pages/academic-planning/ApprovalWorkflow.jsx'))
+const AnalyticsCoverage = lazy(() => import('./pages/academic-planning/AnalyticsCoverage.jsx'))
+
 function App() {
   return (
     <Suspense fallback={
@@ -41,6 +49,14 @@ function App() {
           <Route path="sports" element={<Sports />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="settings" element={<Settings />} />
+
+          {/* Academic Planning */}
+          <Route path="academic/lesson-plans" element={<WeeklyLessonPlans />} />
+          <Route path="academic/syllabus" element={<TermSyllabusPlanner />} />
+          <Route path="academic/assessments" element={<AssessmentPlanner />} />
+          <Route path="academic/question-bank" element={<QuestionBank />} />
+          <Route path="academic/approvals" element={<ApprovalWorkflow />} />
+          <Route path="academic/analytics" element={<AnalyticsCoverage />} />
         </Route>
       </Routes>
     </Suspense>

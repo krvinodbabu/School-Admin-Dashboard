@@ -18,6 +18,12 @@ import {
   Trophy,
   X,
   ChevronUp,
+  NotebookPen,
+  CalendarRange,
+  ListChecks,
+  Database,
+  GitPullRequestArrow,
+  BarChart3,
 } from 'lucide-react'
 
 const navItems = [
@@ -34,6 +40,33 @@ const navItems = [
   { to: '/notifications', label: 'Notifications', icon: Bell },
   { to: '/settings', label: 'Settings', icon: Settings },
 ]
+
+const academicPlanningItems = [
+  { to: '/academic/lesson-plans', label: 'Lesson Plans', icon: NotebookPen },
+  { to: '/academic/syllabus', label: 'Syllabus Planner', icon: CalendarRange },
+  { to: '/academic/assessments', label: 'Assessments', icon: ListChecks },
+  { to: '/academic/question-bank', label: 'Question Bank', icon: Database },
+  { to: '/academic/approvals', label: 'Approvals', icon: GitPullRequestArrow },
+  { to: '/academic/analytics', label: 'Analytics', icon: BarChart3 },
+]
+
+function NavItem({ to, label, icon: Icon, end, onClick }) {
+  return (
+    <NavLink
+      to={to}
+      end={end}
+      className={({ isActive }) =>
+        `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`
+      }
+      onClick={onClick}
+    >
+      <span className="sidebar__link-icon">
+        <Icon size={18} />
+      </span>
+      <span>{label}</span>
+    </NavLink>
+  )
+}
 
 export default function Sidebar({ isOpen, onClose }) {
   return (
@@ -65,60 +98,23 @@ export default function Sidebar({ isOpen, onClose }) {
         {/* Nav items */}
         <nav className="sidebar__nav-scroll" aria-label="Site navigation">
           <span className="sidebar__section-label">Main Menu</span>
-
-          {navItems.slice(0, 5).map(({ to, label, icon: Icon, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              className={({ isActive }) =>
-                `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`
-              }
-              onClick={onClose}
-            >
-              <span className="sidebar__link-icon">
-                <Icon size={18} />
-              </span>
-              <span>{label}</span>
-            </NavLink>
+          {navItems.slice(0, 5).map((item) => (
+            <NavItem key={item.to} {...item} onClick={onClose} />
           ))}
 
           <span className="sidebar__section-label">Academic</span>
+          {navItems.slice(5, 10).map((item) => (
+            <NavItem key={item.to} {...item} onClick={onClose} />
+          ))}
 
-          {navItems.slice(5, 10).map(({ to, label, icon: Icon, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              className={({ isActive }) =>
-                `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`
-              }
-              onClick={onClose}
-            >
-              <span className="sidebar__link-icon">
-                <Icon size={18} />
-              </span>
-              <span>{label}</span>
-            </NavLink>
+          <span className="sidebar__section-label">📚 Academic Planning</span>
+          {academicPlanningItems.map((item) => (
+            <NavItem key={item.to} {...item} onClick={onClose} />
           ))}
 
           <span className="sidebar__section-label">System</span>
-
-          {navItems.slice(10).map(({ to, label, icon: Icon, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              className={({ isActive }) =>
-                `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`
-              }
-              onClick={onClose}
-            >
-              <span className="sidebar__link-icon">
-                <Icon size={18} />
-              </span>
-              <span>{label}</span>
-            </NavLink>
+          {navItems.slice(10).map((item) => (
+            <NavItem key={item.to} {...item} onClick={onClose} />
           ))}
         </nav>
 
