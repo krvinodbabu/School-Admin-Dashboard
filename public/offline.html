@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Offline - EduAdmin</title>
+    <style>
+      :root {
+        --color-primary: #2563eb;
+        --color-bg: #f1f5f9;
+        --color-surface: #ffffff;
+        --color-text: #0f172a;
+        --color-text-muted: #64748b;
+        --radius: 12px;
+      }
+      body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background: var(--color-bg);
+        color: var(--color-text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 1.5rem;
+        box-sizing: border-box;
+      }
+      .card {
+        background: var(--color-surface);
+        padding: 2.5rem 2rem;
+        border-radius: var(--radius);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+      }
+      .icon-container {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 72px;
+        height: 72px;
+        background: #eff6ff;
+        color: var(--color-primary);
+        border-radius: 50%;
+        margin-bottom: 1.5rem;
+      }
+      .icon-container svg {
+        width: 36px;
+        height: 36px;
+      }
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
+      }
+      p {
+        color: var(--color-text-muted);
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin: 0 0 2rem 0;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-primary);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.15s;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .btn:hover {
+        background: #1d4ed8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="icon-container">
+        <!-- Cloud Offline Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5" />
+        </svg>
+      </div>
+      <h1>You are offline</h1>
+      <p>It looks like you don't have an active internet connection. Please check your network and try again to access the EduAdmin Dashboard.</p>
+      <button class="btn" onclick="window.location.reload()">Retry Connection</button>
+    </div>
+  </body>
+</html>
