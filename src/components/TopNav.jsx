@@ -3,7 +3,7 @@
  */
 import { Menu, Search, Bell, School, Sun, Moon } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext.jsx'
-import InstitutionSelector from './InstitutionSelector.jsx'
+import InstitutionSwitcher from '../tenant/InstitutionSwitcher.jsx'
 import RoleSelector from './RoleSelector.jsx'
 
 export default function TopNav({ onMenuClick, title }) {
@@ -32,9 +32,9 @@ export default function TopNav({ onMenuClick, title }) {
         {/* Desktop page title */}
         <h2 className="topnav__title desktop-only">{title}</h2>
         
-        {/* Desktop Institution Selector */}
-        <div className="desktop-only" style={{ marginLeft: '1rem' }}>
-          <InstitutionSelector />
+        {/* Workspace Switcher */}
+        <div style={{ marginLeft: '1rem' }}>
+          <InstitutionSwitcher />
         </div>
       </div>
 

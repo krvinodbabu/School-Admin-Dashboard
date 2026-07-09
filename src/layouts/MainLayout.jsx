@@ -3,7 +3,8 @@ import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from '../components/Sidebar.jsx'
 import TopNav from '../components/TopNav.jsx'
 import { useEduOS } from '../core/EduOSContext.jsx'
-import OnboardingScreen from '../platform/OnboardingScreen.jsx'
+import { useTenant } from '../context/TenantContext.jsx'
+import OnboardingWizard from '../onboarding/OnboardingWizard.jsx'
 
 const pageTitles = {
   '/': 'Dashboard',
@@ -18,6 +19,18 @@ const pageTitles = {
   '/sports': 'Sports Activities',
   '/notifications': 'Notifications',
   '/settings': 'Settings',
+  '/admissions': 'Admissions Intake',
+  '/hr': 'Staff Directory',
+  '/transport': 'Bus Routing',
+  '/events': 'School Events',
+  '/support': 'Help Desk',
+  '/system/access': 'Access Control Matrix',
+  '/system/audit': 'Audit Trail Log',
+  '/platform/campuses': 'Campus Management',
+  '/platform/departments': 'Departments',
+  '/platform/cross-analytics': 'Cross-Campus Analytics',
+  '/platform/explorer': 'Organizational Explorer',
+  '/platform/communication': 'Multi-Campus Communication',
   '/academic/lesson-plans': 'Weekly Lesson Plans',
   '/academic/syllabus': 'Syllabus Planner',
   '/academic/assessments': 'Assessment Planner',
@@ -28,12 +41,12 @@ const pageTitles = {
 
 export default function MainLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const { isOnboarded } = useEduOS()
+  const { isWizardCompleted } = useTenant()
   const location = useLocation()
   const title = pageTitles[location.pathname] || 'School Admin'
 
-  if (!isOnboarded) {
-    return <OnboardingScreen />
+  if (!isWizardCompleted) {
+    return <OnboardingWizard />
   }
 
   return (

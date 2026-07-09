@@ -32,6 +32,13 @@ const AnalyticsCoverage = lazy(() => import('./pages/academic-planning/Analytics
 const AccessManagement = lazy(() => import('./access-management/AccessManagement.jsx'))
 const AuditLogs = lazy(() => import('./access-management/AuditLogs.jsx'))
 
+/* Tenant, Campuses & Organization Hierarchy */
+const Campuses = lazy(() => import('./campuses/Campuses.jsx'))
+const Departments = lazy(() => import('./departments/Departments.jsx'))
+const CrossCampusAnalytics = lazy(() => import('./platform/CrossCampusAnalytics.jsx'))
+const OrganizationExplorer = lazy(() => import('./organization/OrganizationExplorer.jsx'))
+const MultiCampusCommunication = lazy(() => import('./platform/MultiCampusCommunication.jsx'))
+
 function App() {
   return (
     <Suspense fallback={
@@ -52,7 +59,7 @@ function App() {
           <Route path="timetable" element={<Timetable />} />
           <Route path="library" element={<Library />} />
           <Route path="sports" element={<Sports />} />
-          <Route path="notifications" element={<Notifications />} />
+          <Route key="notifications" path="notifications" element={<Notifications />} />
           <Route path="settings" element={<Settings />} />
 
           {/* New operating system module placeholders */}
@@ -65,6 +72,13 @@ function App() {
           {/* Platform Access control management */}
           <Route path="system/access" element={<AccessManagement />} />
           <Route path="system/audit" element={<AuditLogs />} />
+
+          {/* Tenant & Campus administration */}
+          <Route path="platform/campuses" element={<Campuses />} />
+          <Route path="platform/departments" element={<Departments />} />
+          <Route path="platform/cross-analytics" element={<CrossCampusAnalytics />} />
+          <Route path="platform/explorer" element={<OrganizationExplorer />} />
+          <Route path="platform/communication" element={<MultiCampusCommunication />} />
 
           {/* Academic Planning */}
           <Route path="academic/lesson-plans" element={<WeeklyLessonPlans />} />

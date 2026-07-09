@@ -1,9 +1,10 @@
 /**
- * Sidebar navigation — dynamically filtered based on both active modules & role permissions.
+ * Sidebar navigation — dynamically filtered based on active modules, roles, and campus configurations.
  */
 import { NavLink } from 'react-router-dom'
 import { useEduOS } from '../core/EduOSContext.jsx'
 import { useRBAC } from '../rbac/RBACContext.jsx'
+import { useTenant } from '../context/TenantContext.jsx'
 import {
   LayoutDashboard,
   GraduationCap,
@@ -31,7 +32,8 @@ import {
   CalendarDays,
   Building,
   HelpCircle,
-  Shield
+  Shield,
+  Activity
 } from 'lucide-react'
 
 // Dynamic mapping of links to their parent operating system modules & required permissions
@@ -132,6 +134,18 @@ const moduleSections = [
   }
 ]
 
+// Standalone Tenant & Campus administrative links
+const tenantSection = {
+  label: '🏢 Tenant & Campus',
+  items: [
+    { to: '/platform/campuses', label: 'Campus Management', icon: Building, permission: 'rbac.view' },
+    { to: '/platform/departments', label: 'Departments', icon: School, permission: 'rbac.view' },
+    { to: '/platform/cross-analytics', label: 'Cross-Campus Analytics', icon: BarChart3, permission: 'audit.view' },
+    { to: '/platform/explorer', label: 'Organization Explorer', icon: Layers, permission: 'rbac.view' },
+    { to: '/platform/communication', label: 'Multi-Campus Notice', icon: Bell, permission: 'notifications.send' }
+  ]
+}
+
 // Standalone System Control Links visible only to RBAC managers
 const securitySection = {
   label: '🛡️ Security & Control',
@@ -162,6 +176,7 @@ function NavItem({ to, label, icon: Icon, end, onClick }) {
 export default function Sidebar({ isOpen, onClose }) {
   const { modules, institution, currentRole } = useEduOS()
   const { hasPermission } = useRBAC()
+  const { activeInstitution, activeCampus, activeAcademicYear } = useTenant()
 
   // Helper to check if a specific module name is enabled
   const isModuleEnabled = (moduleName) => {
@@ -175,13 +190,13 @@ export default function Sidebar({ isOpen, onClose }) {
 
       <aside className={`sidebar ${isOpen ? 'sidebar--open' : ''}`} aria-label="Main navigation">
         {/* Header / Brand */}
-        <div className="sidebar__header">
+        <div className="sidebar__header" style={{ paddingBottom: '0.5rem' }}>
           <div className="sidebar__brand">
             <div className="sidebar__brand-icon" aria-hidden="true">
               <School size={20} color="#fff" />
             </div>
             <div className="sidebar__brand-text">
-              <span className="sidebar__brand-name">{institution.name.split(' ')[0]}OS</span>
+              <span className="sidebar__brand-name">EduOS</span>
               <span className="sidebar__brand-tag">Platform Foundation</span>
             </div>
           </div>
@@ -193,6 +208,14 @@ export default function Sidebar({ isOpen, onClose }) {
           >
             <X size={18} />
           </button>
+        </div>
+
+        {/* Active Context Badge */}
+        <div className="active-context-badge">
+          <div className="active-context-badge__title">Current Context:</div>
+          <div className="active-context-badge__inst">{activeInstitution?.name || institution.name}</div>
+          <div className="active-context-badge__camp">{activeCampus?.name || institution.campus}</div>
+          <div className="active-context-badge__year">Academic Year {activeAcademicYear}</div>
         </div>
 
         {/* Nav items */}
@@ -225,6 +248,27 @@ export default function Sidebar({ isOpen, onClose }) {
               </div>
             )
           })}
+
+          {/* Tenant & Campus administrative links */}
+          {(() => {
+            const visibleTenantItems = tenantSection.items.filter(item => {
+              if (item.permission && !hasPermission(item.permission)) {
+                return false
+              }
+              return true
+            })
+
+            if (visibleTenantItems.length === 0) return null
+
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span className="sidebar__section-label">{tenantSection.label}</span>
+                {visibleTenantItems.map((item) => (
+                  <NavItem key={item.to} {...item} onClick={onClose} />
+                ))}
+              </div>
+            )
+          })()}
 
           {/* Platform Security controls */}
           {(() => {

@@ -4,6 +4,7 @@ import DataTable from '../components/DataTable.jsx'
 import StatusBadge from '../components/StatusBadge.jsx'
 import ActionButtons, { placeholderAction } from '../components/ActionButtons.jsx'
 import { getStudents } from '../services/dataService.js'
+import { useTenant } from '../context/TenantContext.jsx'
 
 const columns = [
   { key: 'name', label: 'Name' },
@@ -15,11 +16,25 @@ const columns = [
 ]
 
 export default function Students() {
-  const students = getStudents()
+  const allStudents = getStudents()
+  const { activeCampus } = useTenant()
+
+  // Campus Isolation filtering partitioning
+  const students = allStudents.filter((student, index) => {
+    if (!activeCampus) return true
+    if (activeCampus.code === 'HYD') {
+      return index % 2 === 1
+    }
+    if (activeCampus.code === 'BLR') {
+      return index % 2 === 0
+    }
+    // Custom created campus has 0 students initially
+    return false
+  })
 
   return (
-    <div className="page">
-      <PageHeader title="Students Management" subtitle={`${students.length} students enrolled`}>
+    <div className="page animate-fadeIn">
+      <PageHeader title="Students Management" subtitle={`${students.length} students registered at ${activeCampus?.name || 'EduOS Branch'}`}>
         <button type="button" className="btn btn--primary">
           <Plus size={18} /> Add Student
         </button>

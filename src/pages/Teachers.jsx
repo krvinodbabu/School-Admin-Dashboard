@@ -3,6 +3,7 @@ import PageHeader from '../components/PageHeader.jsx'
 import DataTable from '../components/DataTable.jsx'
 import StatusBadge from '../components/StatusBadge.jsx'
 import { getTeachers } from '../services/dataService.js'
+import { useTenant } from '../context/TenantContext.jsx'
 
 const columns = [
   { key: 'name', label: 'Name' },
@@ -13,11 +14,25 @@ const columns = [
 ]
 
 export default function Teachers() {
-  const teachers = getTeachers()
+  const allTeachers = getTeachers()
+  const { activeCampus } = useTenant()
+
+  // Campus Isolation filtering partitioning
+  const teachers = allTeachers.filter((teacher, index) => {
+    if (!activeCampus) return true
+    if (activeCampus.code === 'HYD') {
+      return index % 2 === 1
+    }
+    if (activeCampus.code === 'BLR') {
+      return index % 2 === 0
+    }
+    // Custom created campus has 0 teachers initially
+    return false
+  })
 
   return (
-    <div className="page">
-      <PageHeader title="Teachers Management" subtitle={`${teachers.length} teaching staff members`}>
+    <div className="page animate-fadeIn">
+      <PageHeader title="Teachers Management" subtitle={`${teachers.length} teaching staff members registered at ${activeCampus?.name || 'EduOS Branch'}`}>
         <button type="button" className="btn btn--primary">
           <Plus size={18} /> Add Teacher
         </button>
