@@ -5,6 +5,7 @@ import TopNav from '../components/TopNav.jsx'
 import { useEduOS } from '../core/EduOSContext.jsx'
 import { useTenant } from '../context/TenantContext.jsx'
 import OnboardingWizard from '../onboarding/OnboardingWizard.jsx'
+import CopilotPanel from '../copilot/CopilotPanel.jsx'
 
 const pageTitles = {
   '/': 'Dashboard',
@@ -58,6 +59,7 @@ export default function MainLayout() {
           <Outlet />
         </main>
       </div>
+      <CopilotPanel />
     </div>
   )
 }

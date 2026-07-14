@@ -36,7 +36,14 @@ import {
   Activity,
   Layers,
   GitBranch,
-  Clock
+  Clock,
+  Sparkles,
+  Brain,
+  Compass,
+  Award,
+  Cpu,
+  Eye,
+  Target
 } from 'lucide-react'
 
 // Dynamic mapping of links to their parent operating system modules & required permissions
@@ -162,6 +169,38 @@ const workflowSection = {
     { to: '/workflows/sla', label: 'SLA Management', icon: Clock, permission: 'rbac.view' },
     { to: '/workflows/notifications', label: 'Notification Hub', icon: Bell, permission: 'notifications.send' },
     { to: '/workflows/analytics', label: 'Analytics', icon: BarChart3, permission: 'rbac.view' }
+  ]
+}
+
+// AI Copilot & Intelligence links
+const aiSection = {
+  label: '🤖 AI & Intelligence',
+  items: [
+    { to: '/ai/teacher-copilot', label: 'Teacher Copilot', icon: Sparkles, permission: 'lessonplan.create' },
+    { to: '/ai/parent-copilot', label: 'Parent Copilot', icon: Users, permission: 'student.view' },
+    { to: '/ai/learning-intelligence', label: 'Learning Intelligence', icon: Brain, permission: 'student.view' },
+    { to: '/ai/management', label: 'Management AI', icon: BarChart3, permission: 'audit.view' },
+    { to: '/ai/governance', label: 'AI Governance', icon: Eye, permission: 'rbac.view' },
+  ]
+}
+
+// Learning & Development links
+const learningSection = {
+  label: '🎓 Learning & Development',
+  items: [
+    { to: '/ai/competencies', label: 'Competency Tracker', icon: Target, permission: 'student.view' },
+    { to: '/ai/outcomes', label: 'Outcome Tracker', icon: Layers, permission: 'student.view' },
+    { to: '/ai/portfolio', label: 'Digital Portfolio', icon: FileText, permission: 'student.view' },
+    { to: '/ai/credentials', label: 'Micro Credentials', icon: Award, permission: 'student.view' },
+    { to: '/ai/career-guidance', label: 'Career Guidance', icon: Compass, permission: 'student.view' },
+  ]
+}
+
+// Future Campus links
+const futureCampusSection = {
+  label: '🚀 Future Campus',
+  items: [
+    { to: '/ai/future-campus', label: 'Integration Readiness', icon: Cpu, permission: 'rbac.view' },
   ]
 }
 
@@ -327,6 +366,42 @@ export default function Sidebar({ isOpen, onClose }) {
                 {visibleSecurityItems.map((item) => (
                   <NavItem key={item.to} {...item} onClick={onClose} />
                 ))}
+              </div>
+            )
+          })()}
+
+          {/* AI & Intelligence links */}
+          {(() => {
+            const items = aiSection.items.filter(item => !item.permission || hasPermission(item.permission))
+            if (items.length === 0) return null
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span className="sidebar__section-label">{aiSection.label}</span>
+                {items.map((item) => <NavItem key={item.to} {...item} onClick={onClose} />)}
+              </div>
+            )
+          })()}
+
+          {/* Learning & Development links */}
+          {(() => {
+            const items = learningSection.items.filter(item => !item.permission || hasPermission(item.permission))
+            if (items.length === 0) return null
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span className="sidebar__section-label">{learningSection.label}</span>
+                {items.map((item) => <NavItem key={item.to} {...item} onClick={onClose} />)}
+              </div>
+            )
+          })()}
+
+          {/* Future Campus links */}
+          {(() => {
+            const items = futureCampusSection.items.filter(item => !item.permission || hasPermission(item.permission))
+            if (items.length === 0) return null
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span className="sidebar__section-label">{futureCampusSection.label}</span>
+                {items.map((item) => <NavItem key={item.to} {...item} onClick={onClose} />)}
               </div>
             )
           })()}

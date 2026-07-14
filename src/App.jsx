@@ -50,6 +50,19 @@ const CaseManagement = lazy(() => import('./cases/CaseManagement.jsx'))
 const ServiceDesk = lazy(() => import('./service-desk/ServiceDesk.jsx'))
 const WorkflowAnalytics = lazy(() => import('./workflows/WorkflowAnalytics.jsx'))
 
+/* AI Copilot & Future Education */
+const TeacherCopilot = lazy(() => import('./copilot/TeacherCopilot.jsx'))
+const ParentCopilot = lazy(() => import('./copilot/ParentCopilot.jsx'))
+const StudentLearningIntelligence = lazy(() => import('./learning-intelligence/StudentLearningIntelligence.jsx'))
+const ManagementAI = lazy(() => import('./ai/ManagementAI.jsx'))
+const CompetencyTracker = lazy(() => import('./competencies/CompetencyTracker.jsx'))
+const OutcomeTracker = lazy(() => import('./outcomes/OutcomeTracker.jsx'))
+const DigitalPortfolio = lazy(() => import('./portfolio/DigitalPortfolio.jsx'))
+const MicroCredentials = lazy(() => import('./portfolio/MicroCredentials.jsx'))
+const CareerGuidance = lazy(() => import('./career-guidance/CareerGuidance.jsx'))
+const FutureCampus = lazy(() => import('./future-campus/FutureCampus.jsx'))
+const AIGovernance = lazy(() => import('./ai/AIGovernance.jsx'))
+
 function App() {
   return (
     <Suspense fallback={
@@ -108,6 +121,19 @@ function App() {
           <Route path="workflows/cases" element={<CaseManagement />} />
           <Route path="workflows/service-desk" element={<ServiceDesk />} />
           <Route path="workflows/analytics" element={<WorkflowAnalytics />} />
+
+          {/* AI Copilot & Future Education */}
+          <Route path="ai/teacher-copilot" element={<TeacherCopilot />} />
+          <Route path="ai/parent-copilot" element={<ParentCopilot />} />
+          <Route path="ai/learning-intelligence" element={<StudentLearningIntelligence />} />
+          <Route path="ai/management" element={<ManagementAI />} />
+          <Route path="ai/competencies" element={<CompetencyTracker />} />
+          <Route path="ai/outcomes" element={<OutcomeTracker />} />
+          <Route path="ai/portfolio" element={<DigitalPortfolio />} />
+          <Route path="ai/credentials" element={<MicroCredentials />} />
+          <Route path="ai/career-guidance" element={<CareerGuidance />} />
+          <Route path="ai/future-campus" element={<FutureCampus />} />
+          <Route path="ai/governance" element={<AIGovernance />} />
         </Route>
       </Routes>
     </Suspense>

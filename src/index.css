@@ -3434,5 +3434,42 @@ html, body, #root, .app-layout { max-width: 100%; overflow-x: hidden; }
   color: var(--color-green-text);
 }
 
+/* ─────────────────────────────────────────
+   AI Copilot Panel Styles
+───────────────────────────────────────── */
+@keyframes copilotSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
 
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+
+/* Responsive copilot */
+@media (max-width: 480px) {
+  .copilot-panel {
+    width: calc(100vw - 1rem) !important;
+    right: 0.5rem !important;
+    bottom: 5rem !important;
+    height: calc(100vh - 6rem) !important;
+    border-radius: 12px !important;
+  }
+  .copilot-fab {
+    bottom: 1rem !important;
+    right: 1rem !important;
+    width: 48px !important;
+    height: 48px !important;
+  }
+}
+
+/* Target icon fix for Sidebar */
+.sidebar__link-icon svg {
+  flex-shrink: 0;
+}
