@@ -8,6 +8,12 @@ const Login = lazy(() => import('./auth/Login.jsx'))
 const AccessDenied = lazy(() => import('./auth/AccessDenied.jsx'))
 const UserProfile = lazy(() => import('./profile/UserProfile.jsx'))
 
+/* New Role & Analytics Modules */
+const RoleCatalogue = lazy(() => import('./roles/RoleCatalogue.jsx'))
+const PrivilegeMatrix = lazy(() => import('./privileges/PrivilegeMatrix.jsx'))
+const AnalyticsSelector = lazy(() => import('./analytics/AnalyticsSelector.jsx'))
+const CommandCenter = lazy(() => import('./executive/CommandCenter.jsx'))
+
 const Dashboard = lazy(() => import('./pages/Dashboard.jsx'))
 const Students = lazy(() => import('./pages/Students.jsx'))
 const Teachers = lazy(() => import('./pages/Teachers.jsx'))
@@ -102,6 +108,12 @@ function App() {
             {/* Platform Access control management */}
             <Route path="system/access" element={<AccessManagement />} />
             <Route path="system/audit" element={<AuditLogs />} />
+            <Route path="system/roles" element={<RoleCatalogue />} />
+            <Route path="system/privileges" element={<PrivilegeMatrix />} />
+
+            {/* Custom analytics and command center */}
+            <Route path="analytics/role-desk" element={<AnalyticsSelector />} />
+            <Route path="executive/command-center" element={<CommandCenter />} />
 
             {/* Tenant & Campus administration */}
             <Route path="platform/campuses" element={<Campuses />} />

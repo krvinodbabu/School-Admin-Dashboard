@@ -6,6 +6,7 @@ import { useEduOS } from '../core/EduOSContext.jsx'
 import { useTenant } from '../context/TenantContext.jsx'
 import OnboardingWizard from '../onboarding/OnboardingWizard.jsx'
 import CopilotPanel from '../copilot/CopilotPanel.jsx'
+import RoleSwitcher from '../roles/RoleSwitcher.jsx'
 
 const pageTitles = {
   '/': 'Dashboard',
@@ -38,6 +39,10 @@ const pageTitles = {
   '/academic/question-bank': 'Question Bank',
   '/academic/approvals': 'Approval Workflow',
   '/academic/analytics': 'Analytics & Coverage',
+  '/system/roles': 'Role Catalogue',
+  '/system/privileges': 'Privilege Matrix',
+  '/analytics/role-desk': 'Analytics Desk',
+  '/executive/command-center': 'Command Center'
 }
 
 export default function MainLayout() {
@@ -60,6 +65,7 @@ export default function MainLayout() {
         </main>
       </div>
       <CopilotPanel />
+      <RoleSwitcher />
     </div>
   )
 }

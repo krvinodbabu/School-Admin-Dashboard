@@ -176,6 +176,7 @@ const workflowSection = {
 const aiSection = {
   label: '🤖 AI & Intelligence',
   items: [
+    { to: '/executive/command-center', label: 'Command Center', icon: Activity, permission: 'rbac.view' },
     { to: '/ai/teacher-copilot', label: 'Teacher Copilot', icon: Sparkles, permission: 'lessonplan.create' },
     { to: '/ai/parent-copilot', label: 'Parent Copilot', icon: Users, permission: 'student.view' },
     { to: '/ai/learning-intelligence', label: 'Learning Intelligence', icon: Brain, permission: 'student.view' },
@@ -188,6 +189,7 @@ const aiSection = {
 const learningSection = {
   label: '🎓 Learning & Development',
   items: [
+    { to: '/analytics/role-desk', label: 'Analytics Desk', icon: BarChart3, permission: 'student.view' },
     { to: '/ai/competencies', label: 'Competency Tracker', icon: Target, permission: 'student.view' },
     { to: '/ai/outcomes', label: 'Outcome Tracker', icon: Layers, permission: 'student.view' },
     { to: '/ai/portfolio', label: 'Digital Portfolio', icon: FileText, permission: 'student.view' },
@@ -209,7 +211,9 @@ const securitySection = {
   label: '🛡️ Security & Control',
   items: [
     { to: '/system/access', label: 'Access Control Matrix', icon: Shield, permission: 'rbac.view' },
-    { to: '/system/audit', label: 'Audit Trail Log', icon: FileText, permission: 'audit.view' }
+    { to: '/system/audit', label: 'Audit Trail Log', icon: FileText, permission: 'audit.view' },
+    { to: '/system/roles', label: 'Role Catalogue', icon: Shield, permission: 'rbac.view' },
+    { to: '/system/privileges', label: 'Privilege Matrix', icon: Layers, permission: 'rbac.view' }
   ]
 }
 

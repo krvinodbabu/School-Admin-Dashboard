@@ -13,15 +13,8 @@ import {
   ArrowRight,
   BookOpen,
 } from 'lucide-react'
-import StatCard from '../components/StatCard.jsx'
-import Card from '../components/Card.jsx'
-import BarChart from '../components/BarChart.jsx'
-import DonutChart from '../components/DonutChart.jsx'
-import { getDashboardData } from '../services/dataService.js'
-import { formatCurrency, formatDate } from '../utils/helpers.js'
 import { useEduOS } from '../core/EduOSContext.jsx'
-import RoleDashboardPlaceholders from '../roles/RoleDashboardPlaceholders.jsx'
-import PermissionGuard from '../guards/PermissionGuard.jsx'
+import DashboardSelector from '../dashboards/DashboardSelector.jsx'
 
 function getGreeting() {
   const h = new Date().getHours()
@@ -30,22 +23,14 @@ function getGreeting() {
   return 'Good Evening'
 }
 
-function getTodayFormatted() {
-  return new Date().toLocaleDateString('en-IN', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
-  })
-}
-
 export default function Dashboard() {
-  const { stats, attendanceTrend, feeDistribution, upcomingExams, recentNotifications } =
-    getDashboardData()
   const { institution, currentRole } = useEduOS()
 
   return (
-    <div className="page animate-fadeIn">
+    <div className="page animate-fadeIn" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
       {/* ── Hero Banner ── */}
-      <div className="dashboard-hero">
+      <div className="dashboard-hero" style={{ marginBottom: 0 }}>
         <div className="dashboard-hero__eyebrow">
           <Sparkles size={11} />
           {institution.name} · Academic Year {institution.academicYear}
@@ -61,14 +46,6 @@ export default function Dashboard() {
             <FileText size={16} />
             Quick Report
           </button>
-          <button type="button" className="btn btn--hero-primary" id="dashboard-add-student-btn">
-            <GraduationCap size={16} />
-            Add Student
-          </button>
-          <button type="button" className="btn btn--hero-primary" id="dashboard-schedule-btn">
-            <CalendarDays size={16} />
-            Schedule Event
-          </button>
         </div>
 
         <div className="dashboard-hero__date">
@@ -77,134 +54,9 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* ── Role Based Placeholders Panel ── */}
-      <RoleDashboardPlaceholders />
+      {/* ── Configuration Driven Dynamic Dashboard ── */}
+      <DashboardSelector />
 
-      {/* ── KPI Stats ── */}
-      <div className="stats-grid">
-        <PermissionGuard permission="student.view">
-          <StatCard
-            title="Total Students"
-            value={stats.totalStudents.toLocaleString()}
-            icon={GraduationCap}
-            color="blue"
-            trend="+12 this month"
-          />
-        </PermissionGuard>
-
-        <PermissionGuard permission="teacher.view">
-          <StatCard
-            title="Total Teachers"
-            value={stats.totalTeachers}
-            icon={Users}
-            color="purple"
-            trend="2 new hires"
-          />
-        </PermissionGuard>
-
-        <PermissionGuard permission="fees.view">
-          <StatCard
-            title="Pending Fees"
-            value={formatCurrency(stats.pendingFees)}
-            icon={Wallet}
-            color="amber"
-            trend="34 students"
-          />
-        </PermissionGuard>
-
-        <PermissionGuard permission="student.view">
-          <StatCard
-            title="Attendance Rate"
-            value={`${stats.attendancePercentage}%`}
-            icon={ClipboardCheck}
-            color="green"
-            trend="+1.2% vs last week"
-          />
-        </PermissionGuard>
-
-        <PermissionGuard permission="student.view">
-          <StatCard
-            title="Upcoming Exams"
-            value={stats.upcomingExams}
-            icon={FileText}
-            color="red"
-            trend="Next: Jul 15"
-          />
-        </PermissionGuard>
-
-        <StatCard
-          title="Notifications"
-          value={stats.recentNotifications}
-          icon={Bell}
-          color="indigo"
-          trend="3 unread"
-        />
-      </div>
-
-      {/* ── Charts Row ── */}
-      <div className="dashboard-grid">
-        <PermissionGuard permission="student.view">
-          <Card
-            title="Attendance Trend"
-            subtitle="Monthly attendance percentage — last 6 months"
-            actionLabel="Full report →"
-          >
-            <BarChart data={attendanceTrend} valueKey="percentage" labelKey="month" />
-          </Card>
-        </PermissionGuard>
-
-        <PermissionGuard permission="fees.view">
-          <Card
-            title="Fee Collection Status"
-            subtitle="Distribution of paid, pending, and overdue fees"
-          >
-            <DonutChart data={feeDistribution} />
-          </Card>
-        </PermissionGuard>
-
-        {/* Upcoming Exams */}
-        <PermissionGuard permission="student.view">
-          <Card
-            title="Upcoming Exams"
-            subtitle={`${upcomingExams.length} scheduled this month`}
-            actionLabel="View all"
-          >
-            <ul className="list">
-              {upcomingExams.map((exam) => (
-                <li key={exam.id} className="list__item">
-                  <div>
-                    <strong>{exam.name}</strong>
-                    <span className="list__meta">
-                      <BookOpen size={11} style={{ display: 'inline', marginRight: 4 }} />
-                      {exam.classes}
-                    </span>
-                  </div>
-                  <span className="list__date">{formatDate(exam.date)}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </PermissionGuard>
-
-        {/* Recent Notifications */}
-        <Card
-          title="Recent Notifications"
-          subtitle="Latest school-wide announcements"
-          actionLabel="View all"
-        >
-          <ul className="list">
-            {recentNotifications.map((n) => (
-              <li key={n.id} className="list__item">
-                <div>
-                  <strong>{n.title}</strong>
-                  <span className="list__meta">{n.message}</span>
-                </div>
-                <span className="list__time">{n.time}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      </div>
     </div>
   )
 }

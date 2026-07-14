@@ -55,8 +55,18 @@ export function AuthProvider({ children }) {
     setUser(null)
   }
 
+  const switchRole = (role) => {
+    const foundUser = DEMO_USERS.find(u => u.role === role)
+    if (foundUser) {
+      setUser({
+        ...foundUser,
+        lastLogin: new Date().toISOString()
+      })
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout, DEMO_USERS }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout, switchRole, DEMO_USERS }}>
       {children}
     </AuthContext.Provider>
   )
