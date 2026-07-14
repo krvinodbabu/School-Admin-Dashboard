@@ -32,6 +32,9 @@ export function RBACProvider({ children }) {
 
   // Core authorization helper
   const hasPermission = (permissionKey) => {
+    if (currentRole === 'Principal' || currentRole === 'Platform Super Admin' || currentRole === 'System Administrator') {
+      return true
+    }
     const activePerms = rolePermissions[currentRole] || []
     if (activePerms.includes('*')) {
       return true // Wildcard Principal access
