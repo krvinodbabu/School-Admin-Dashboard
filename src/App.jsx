@@ -14,6 +14,14 @@ const PrivilegeMatrix = lazy(() => import('./privileges/PrivilegeMatrix.jsx'))
 const AnalyticsSelector = lazy(() => import('./analytics/AnalyticsSelector.jsx'))
 const CommandCenter = lazy(() => import('./executive/CommandCenter.jsx'))
 
+/* Future Education portals */
+const StudentSuccessDashboard = lazy(() => import('./student-success/StudentSuccessDashboard.jsx'))
+const WellnessPortal = lazy(() => import('./wellness/WellnessPortal.jsx'))
+const AlumniNetwork = lazy(() => import('./alumni/AlumniNetwork.jsx'))
+const SustainabilityESG = lazy(() => import('./sustainability/SustainabilityESG.jsx'))
+const GlobalEducation = lazy(() => import('./global-education/GlobalEducation.jsx'))
+const SmartCampusIoT = lazy(() => import('./smart-campus/SmartCampusIoT.jsx'))
+
 const Dashboard = lazy(() => import('./pages/Dashboard.jsx'))
 const Students = lazy(() => import('./pages/Students.jsx'))
 const Teachers = lazy(() => import('./pages/Teachers.jsx'))
@@ -114,6 +122,14 @@ function App() {
             {/* Custom analytics and command center */}
             <Route path="analytics/role-desk" element={<AnalyticsSelector />} />
             <Route path="executive/command-center" element={<CommandCenter />} />
+
+            {/* Future ready portals */}
+            <Route path="student/success" element={<StudentSuccessDashboard />} />
+            <Route path="wellness/portal" element={<WellnessPortal />} />
+            <Route path="alumni/network" element={<AlumniNetwork />} />
+            <Route path="sustainability/esg" element={<SustainabilityESG />} />
+            <Route path="global/education" element={<GlobalEducation />} />
+            <Route path="smart-campus/iot" element={<SmartCampusIoT />} />
 
             {/* Tenant & Campus administration */}
             <Route path="platform/campuses" element={<Campuses />} />

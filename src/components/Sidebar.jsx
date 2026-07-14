@@ -189,6 +189,9 @@ const aiSection = {
 const learningSection = {
   label: '🎓 Learning & Development',
   items: [
+    { to: '/student/success', label: 'Student Success', icon: GraduationCap, permission: 'student.view' },
+    { to: '/wellness/portal', label: 'Wellness & Safety', icon: Activity, permission: 'student.view' },
+    { to: '/alumni/network', label: 'Alumni Network', icon: Users, permission: 'student.view' },
     { to: '/analytics/role-desk', label: 'Analytics Desk', icon: BarChart3, permission: 'student.view' },
     { to: '/ai/competencies', label: 'Competency Tracker', icon: Target, permission: 'student.view' },
     { to: '/ai/outcomes', label: 'Outcome Tracker', icon: Layers, permission: 'student.view' },
@@ -203,6 +206,9 @@ const futureCampusSection = {
   label: '🚀 Future Campus',
   items: [
     { to: '/ai/future-campus', label: 'Integration Readiness', icon: Cpu, permission: 'rbac.view' },
+    { to: '/sustainability/esg', label: 'Sustainability ESG', icon: Layers, permission: 'rbac.view' },
+    { to: '/global/education', label: 'Global Education', icon: Compass, permission: 'rbac.view' },
+    { to: '/smart-campus/iot', label: 'Smart Campus IoT', icon: Cpu, permission: 'rbac.view' },
   ]
 }
 
