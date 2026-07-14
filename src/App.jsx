@@ -14,6 +14,11 @@ const PrivilegeMatrix = lazy(() => import('./privileges/PrivilegeMatrix.jsx'))
 const AnalyticsSelector = lazy(() => import('./analytics/AnalyticsSelector.jsx'))
 const CommandCenter = lazy(() => import('./executive/CommandCenter.jsx'))
 
+/* Enterprise Reporting Desk */
+const EnterpriseReports = lazy(() => import('./reports/EnterpriseReports.jsx'))
+const ReportBuilder = lazy(() => import('./report-builder/ReportBuilder.jsx'))
+const ComplianceDashboard = lazy(() => import('./report-templates/ComplianceDashboard.jsx'))
+
 /* Future Education portals */
 const StudentSuccessDashboard = lazy(() => import('./student-success/StudentSuccessDashboard.jsx'))
 const WellnessPortal = lazy(() => import('./wellness/WellnessPortal.jsx'))
@@ -122,6 +127,11 @@ function App() {
             {/* Custom analytics and command center */}
             <Route path="analytics/role-desk" element={<AnalyticsSelector />} />
             <Route path="executive/command-center" element={<CommandCenter />} />
+
+            {/* Custom Reporting and builder portals */}
+            <Route path="reports/enterprise" element={<EnterpriseReports />} />
+            <Route path="reports/builder" element={<ReportBuilder />} />
+            <Route path="reports/compliance" element={<ComplianceDashboard />} />
 
             {/* Future ready portals */}
             <Route path="student/success" element={<StudentSuccessDashboard />} />

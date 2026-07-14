@@ -212,6 +212,16 @@ const futureCampusSection = {
   ]
 }
 
+// Standalone Reporting Desk links
+const reportingSection = {
+  label: '📈 Reporting & Intelligence',
+  items: [
+    { to: '/reports/enterprise', label: 'Enterprise Reports', icon: FileText, permission: 'rbac.view' },
+    { to: '/reports/builder', label: 'Report Builder', icon: Settings, permission: 'rbac.view' },
+    { to: '/reports/compliance', label: 'Board Compliance', icon: Shield, permission: 'rbac.view' }
+  ]
+}
+
 // Standalone System Control Links visible only to RBAC managers
 const securitySection = {
   label: '🛡️ Security & Control',
@@ -374,6 +384,27 @@ export default function Sidebar({ isOpen, onClose }) {
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="sidebar__section-label">{securitySection.label}</span>
                 {visibleSecurityItems.map((item) => (
+                  <NavItem key={item.to} {...item} onClick={onClose} />
+                ))}
+              </div>
+            )
+          })()}
+
+          {/* Platform Reporting controls */}
+          {(() => {
+            const visibleReportItems = reportingSection.items.filter(item => {
+              if (item.permission && !hasPermission(item.permission)) {
+                return false
+              }
+              return true
+            })
+
+            if (visibleReportItems.length === 0) return null
+
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span className="sidebar__section-label">{reportingSection.label}</span>
+                {visibleReportItems.map((item) => (
                   <NavItem key={item.to} {...item} onClick={onClose} />
                 ))}
               </div>
