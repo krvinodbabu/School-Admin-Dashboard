@@ -4,7 +4,7 @@
 import { Menu, Search, Bell, School, Sun, Moon } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext.jsx'
 import InstitutionSwitcher from '../tenant/InstitutionSwitcher.jsx'
-import RoleSelector from './RoleSelector.jsx'
+import UserMenu from './UserMenu.jsx'
 
 export default function TopNav({ onMenuClick, title }) {
   const { theme, toggleTheme } = useTheme()
@@ -52,7 +52,7 @@ export default function TopNav({ onMenuClick, title }) {
 
       <div className="topnav__right">
         {/* Persona Selector Dropdown */}
-        <RoleSelector />
+        <UserMenu />
 
         {/* Theme toggle */}
         <button

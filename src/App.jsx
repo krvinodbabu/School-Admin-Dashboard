@@ -1,11 +1,12 @@
-/**
- * Root application component.
- * Defines all routes and maps each path to a page component inside MainLayout.
- */
 import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout.jsx'
 import ModulePlaceholder from './modules/ModulePlaceholder.jsx'
+import ProtectedRoute from './auth/ProtectedRoute.jsx'
+
+const Login = lazy(() => import('./auth/Login.jsx'))
+const AccessDenied = lazy(() => import('./auth/AccessDenied.jsx'))
+const UserProfile = lazy(() => import('./profile/UserProfile.jsx'))
 
 const Dashboard = lazy(() => import('./pages/Dashboard.jsx'))
 const Students = lazy(() => import('./pages/Students.jsx'))
@@ -72,68 +73,75 @@ function App() {
       </div>
     }>
       <Routes>
-        <Route element={<MainLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="students" element={<Students />} />
-          <Route path="teachers" element={<Teachers />} />
-          <Route path="fees" element={<Fees />} />
-          <Route path="classes" element={<Classes />} />
-          <Route path="attendance" element={<Attendance />} />
-          <Route path="exams" element={<Exams />} />
-          <Route path="timetable" element={<Timetable />} />
-          <Route path="library" element={<Library />} />
-          <Route path="sports" element={<Sports />} />
-          <Route key="notifications" path="notifications" element={<Notifications />} />
-          <Route path="settings" element={<SettingsPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/403" element={<AccessDenied />} />
+        
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="profile" element={<UserProfile />} />
+            <Route path="students" element={<Students />} />
+            <Route path="teachers" element={<Teachers />} />
+            <Route path="fees" element={<Fees />} />
+            <Route path="classes" element={<Classes />} />
+            <Route path="attendance" element={<Attendance />} />
+            <Route path="exams" element={<Exams />} />
+            <Route path="timetable" element={<Timetable />} />
+            <Route path="library" element={<Library />} />
+            <Route path="sports" element={<Sports />} />
+            <Route key="notifications" path="notifications" element={<Notifications />} />
+            <Route path="settings" element={<SettingsPage />} />
 
-          {/* New operating system module placeholders */}
-          <Route path="admissions" element={<ModulePlaceholder name="Admissions" />} />
-          <Route path="hr" element={<ModulePlaceholder name="HR" />} />
-          <Route path="transport" element={<ModulePlaceholder name="Transport" />} />
-          <Route path="events" element={<ModulePlaceholder name="Events" />} />
-          <Route path="support" element={<ModulePlaceholder name="Support" />} />
+            {/* New operating system module placeholders */}
+            <Route path="admissions" element={<ModulePlaceholder name="Admissions" />} />
+            <Route path="hr" element={<ModulePlaceholder name="HR" />} />
+            <Route path="transport" element={<ModulePlaceholder name="Transport" />} />
+            <Route path="events" element={<ModulePlaceholder name="Events" />} />
+            <Route path="support" element={<ModulePlaceholder name="Support" />} />
 
-          {/* Platform Access control management */}
-          <Route path="system/access" element={<AccessManagement />} />
-          <Route path="system/audit" element={<AuditLogs />} />
+            {/* Platform Access control management */}
+            <Route path="system/access" element={<AccessManagement />} />
+            <Route path="system/audit" element={<AuditLogs />} />
 
-          {/* Tenant & Campus administration */}
-          <Route path="platform/campuses" element={<Campuses />} />
-          <Route path="platform/departments" element={<Departments />} />
-          <Route path="platform/cross-analytics" element={<CrossCampusAnalytics />} />
-          <Route path="platform/explorer" element={<OrganizationExplorer />} />
-          <Route path="platform/communication" element={<MultiCampusCommunication />} />
+            {/* Tenant & Campus administration */}
+            <Route path="platform/campuses" element={<Campuses />} />
+            <Route path="platform/departments" element={<Departments />} />
+            <Route path="platform/cross-analytics" element={<CrossCampusAnalytics />} />
+            <Route path="platform/explorer" element={<OrganizationExplorer />} />
+            <Route path="platform/communication" element={<MultiCampusCommunication />} />
 
-          {/* Academic Planning */}
-          <Route path="academic/lesson-plans" element={<WeeklyLessonPlans />} />
-          <Route path="academic/syllabus" element={<TermSyllabusPlanner />} />
-          <Route path="academic/assessments" element={<AssessmentPlanner />} />
-          <Route path="academic/question-bank" element={<QuestionBank />} />
-          <Route path="academic/approvals" element={<ApprovalWorkflow />} />
-          <Route path="academic/analytics" element={<AnalyticsCoverage />} />
-          {/* Workflow Automation Engine */}
-          <Route path="workflows/designer" element={<WorkflowDesigner />} />
-          <Route path="workflows/approvals" element={<ApprovalCenter />} />
-          <Route path="workflows/escalations" element={<EscalationMatrix />} />
-          <Route path="workflows/sla" element={<SLAManagement />} />
-          <Route path="workflows/tasks" element={<TaskManagement />} />
-          <Route path="workflows/notifications" element={<NotificationCenter />} />
-          <Route path="workflows/cases" element={<CaseManagement />} />
-          <Route path="workflows/service-desk" element={<ServiceDesk />} />
-          <Route path="workflows/analytics" element={<WorkflowAnalytics />} />
+            {/* Academic Planning */}
+            <Route path="academic/lesson-plans" element={<WeeklyLessonPlans />} />
+            <Route path="academic/syllabus" element={<TermSyllabusPlanner />} />
+            <Route path="academic/assessments" element={<AssessmentPlanner />} />
+            <Route path="academic/question-bank" element={<QuestionBank />} />
+            <Route path="academic/approvals" element={<ApprovalWorkflow />} />
+            <Route path="academic/analytics" element={<AnalyticsCoverage />} />
+            
+            {/* Workflow Automation Engine */}
+            <Route path="workflows/designer" element={<WorkflowDesigner />} />
+            <Route path="workflows/approvals" element={<ApprovalCenter />} />
+            <Route path="workflows/escalations" element={<EscalationMatrix />} />
+            <Route path="workflows/sla" element={<SLAManagement />} />
+            <Route path="workflows/tasks" element={<TaskManagement />} />
+            <Route path="workflows/notifications" element={<NotificationCenter />} />
+            <Route path="workflows/cases" element={<CaseManagement />} />
+            <Route path="workflows/service-desk" element={<ServiceDesk />} />
+            <Route path="workflows/analytics" element={<WorkflowAnalytics />} />
 
-          {/* AI Copilot & Future Education */}
-          <Route path="ai/teacher-copilot" element={<TeacherCopilot />} />
-          <Route path="ai/parent-copilot" element={<ParentCopilot />} />
-          <Route path="ai/learning-intelligence" element={<StudentLearningIntelligence />} />
-          <Route path="ai/management" element={<ManagementAI />} />
-          <Route path="ai/competencies" element={<CompetencyTracker />} />
-          <Route path="ai/outcomes" element={<OutcomeTracker />} />
-          <Route path="ai/portfolio" element={<DigitalPortfolio />} />
-          <Route path="ai/credentials" element={<MicroCredentials />} />
-          <Route path="ai/career-guidance" element={<CareerGuidance />} />
-          <Route path="ai/future-campus" element={<FutureCampus />} />
-          <Route path="ai/governance" element={<AIGovernance />} />
+            {/* AI Copilot & Future Education */}
+            <Route path="ai/teacher-copilot" element={<TeacherCopilot />} />
+            <Route path="ai/parent-copilot" element={<ParentCopilot />} />
+            <Route path="ai/learning-intelligence" element={<StudentLearningIntelligence />} />
+            <Route path="ai/management" element={<ManagementAI />} />
+            <Route path="ai/competencies" element={<CompetencyTracker />} />
+            <Route path="ai/outcomes" element={<OutcomeTracker />} />
+            <Route path="ai/portfolio" element={<DigitalPortfolio />} />
+            <Route path="ai/credentials" element={<MicroCredentials />} />
+            <Route path="ai/career-guidance" element={<CareerGuidance />} />
+            <Route path="ai/future-campus" element={<FutureCampus />} />
+            <Route path="ai/governance" element={<AIGovernance />} />
+          </Route>
         </Route>
       </Routes>
     </Suspense>

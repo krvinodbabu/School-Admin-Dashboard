@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { DEFAULT_MODULES, ROLES } from '../config/eduOSConfig.js'
+import { useAuth } from '../auth/AuthContext.jsx'
 
 const EduOSContext = createContext(null)
 
@@ -20,9 +21,8 @@ export function EduOSProvider({ children }) {
     return saved ? JSON.parse(saved) : DEFAULT_MODULES
   })
 
-  const [currentRole, setCurrentRole] = useState(() => {
-    return localStorage.getItem('eduos_current_role') || 'Principal'
-  })
+  const { user } = useAuth()
+  const currentRole = user?.role || 'Guest'
 
   const [isOnboarded, setIsOnboarded] = useState(() => {
     return localStorage.getItem('eduos_is_onboarded') === 'true'
@@ -36,10 +36,6 @@ export function EduOSProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('eduos_modules', JSON.stringify(modules))
   }, [modules])
-
-  useEffect(() => {
-    localStorage.setItem('eduos_current_role', currentRole)
-  }, [currentRole])
 
   useEffect(() => {
     localStorage.setItem('eduos_is_onboarded', isOnboarded ? 'true' : 'false')
@@ -72,7 +68,6 @@ export function EduOSProvider({ children }) {
       isOnboarded,
       updateInstitution,
       toggleModule,
-      setCurrentRole,
       resetOnboarding,
       completeOnboarding
     }}>
