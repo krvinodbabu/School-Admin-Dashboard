@@ -91,23 +91,83 @@ export default function OnboardingWizard() {
 
   const renderStepIndicator = () => {
     return (
-      <div className="wizard-indicators">
-        {[1, 2, 3, 4, 5, 6].map(num => (
-          <div 
-            key={num} 
-            className={`wizard-indicator ${step === num ? 'wizard-indicator--active' : step > num ? 'wizard-indicator--completed' : ''}`}
-            title={`Step ${num}`}
-          >
-            {num}
-          </div>
-        ))}
+      <div className="wizard-indicators" style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+        {[1, 2, 3, 4, 5, 6].map(num => {
+          const isActive = step === num;
+          const isCompleted = step > num;
+          let bg = 'var(--color-surface-2)';
+          let border = '1px solid var(--color-border)';
+          let color = 'var(--color-text-muted)';
+          if (isActive) {
+            bg = 'var(--color-brand)';
+            border = '1px solid var(--color-brand)';
+            color = '#fff';
+          } else if (isCompleted) {
+            bg = 'var(--color-green-bg)';
+            border = '1px solid var(--color-green)';
+            color = 'var(--color-green-text)';
+          }
+
+          return (
+            <div 
+              key={num} 
+              className={`wizard-indicator ${isActive ? 'wizard-indicator--active' : isCompleted ? 'wizard-indicator--completed' : ''}`}
+              title={`Step ${num}`}
+              style={{
+                width: '24px',
+                height: '24px',
+                borderRadius: '50%',
+                background: bg,
+                border: border,
+                color: color,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                transition: 'all 0.2s ease'
+              }}
+            >
+              {num}
+            </div>
+          )
+        })}
       </div>
     )
   }
 
   return (
-    <div className="onboarding-page">
-      <div className="onboarding-card card" style={{ maxWidth: '640px' }}>
+    <div 
+      className="onboarding-page" 
+      style={{ 
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'var(--color-bg)',
+        padding: '1.5rem',
+        overflowY: 'auto',
+        zIndex: 9999
+      }}
+    >
+      <div 
+        className="onboarding-card card" 
+        style={{ 
+          width: '100%', 
+          maxWidth: '640px', 
+          margin: 'auto',
+          background: 'var(--color-surface)',
+          padding: '2.5rem',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-xl)',
+          border: '1px solid var(--color-border)',
+          boxSizing: 'border-box'
+        }}
+      >
         
         {/* Step Indicator */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
@@ -129,19 +189,36 @@ export default function OnboardingWizard() {
             <p className="onboarding-card__subtitle" style={{ textAlign: 'left', marginBottom: '1.5rem' }}>
               Choose the organizational class that fits your operational entity.
             </p>
-            <div className="onboarding-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
-              {INSTITUTION_TYPES.map(t => (
-                <button
-                  type="button"
-                  key={t}
-                  className={`onboarding-type-btn ${institutionType === t ? 'onboarding-type-btn--active' : ''}`}
-                  onClick={() => setInstitutionType(t)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem' }}
-                >
-                  <Building size={16} />
-                  <span>{t}</span>
-                </button>
-              ))}
+            <div className="onboarding-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', marginTop: '1rem' }}>
+              {INSTITUTION_TYPES.map(t => {
+                const isActive = institutionType === t;
+                return (
+                  <button
+                    type="button"
+                    key={t}
+                    className={`onboarding-type-btn ${isActive ? 'onboarding-type-btn--active' : ''}`}
+                    onClick={() => setInstitutionType(t)}
+                    style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '0.5rem', 
+                      padding: '0.85rem',
+                      fontSize: '0.8rem',
+                      fontWeight: 600,
+                      background: isActive ? 'var(--color-brand-bg)' : 'var(--color-surface-2)',
+                      color: isActive ? 'var(--color-brand)' : 'var(--color-text-muted)',
+                      border: isActive ? '1px solid var(--color-brand)' : '1px solid var(--color-border)',
+                      borderRadius: 'var(--radius)',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <Building size={16} />
+                    <span>{t}</span>
+                  </button>
+                )
+              })}
             </div>
           </div>
         )}

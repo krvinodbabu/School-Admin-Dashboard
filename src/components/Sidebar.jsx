@@ -33,7 +33,8 @@ import {
   Building,
   HelpCircle,
   Shield,
-  Activity
+  Activity,
+  Layers
 } from 'lucide-react'
 
 // Dynamic mapping of links to their parent operating system modules & required permissions

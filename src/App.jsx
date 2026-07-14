@@ -18,7 +18,7 @@ const Timetable = lazy(() => import('./pages/Timetable.jsx'))
 const Library = lazy(() => import('./pages/Library.jsx'))
 const Sports = lazy(() => import('./pages/Sports.jsx'))
 const Notifications = lazy(() => import('./pages/Notifications.jsx'))
-const Settings = lazy(() => import('./pages/Settings.jsx'))
+const SettingsPage = lazy(() => import('./pages/Settings.jsx'))
 
 /* Academic Planning */
 const WeeklyLessonPlans = lazy(() => import('./pages/academic-planning/WeeklyLessonPlans.jsx'))
@@ -60,7 +60,7 @@ function App() {
           <Route path="library" element={<Library />} />
           <Route path="sports" element={<Sports />} />
           <Route key="notifications" path="notifications" element={<Notifications />} />
-          <Route path="settings" element={<Settings />} />
+          <Route path="settings" element={<SettingsPage />} />
 
           {/* New operating system module placeholders */}
           <Route path="admissions" element={<ModulePlaceholder name="Admissions" />} />
