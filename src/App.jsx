@@ -39,6 +39,17 @@ const CrossCampusAnalytics = lazy(() => import('./platform/CrossCampusAnalytics.
 const OrganizationExplorer = lazy(() => import('./organization/OrganizationExplorer.jsx'))
 const MultiCampusCommunication = lazy(() => import('./platform/MultiCampusCommunication.jsx'))
 
+/* Workflow Automation Engine */
+const WorkflowDesigner = lazy(() => import('./workflows/WorkflowDesigner.jsx'))
+const ApprovalCenter = lazy(() => import('./approvals/ApprovalCenter.jsx'))
+const EscalationMatrix = lazy(() => import('./escalations/EscalationMatrix.jsx'))
+const SLAManagement = lazy(() => import('./sla/SLAManagement.jsx'))
+const TaskManagement = lazy(() => import('./tasks/TaskManagement.jsx'))
+const NotificationCenter = lazy(() => import('./notifications/NotificationCenter.jsx'))
+const CaseManagement = lazy(() => import('./cases/CaseManagement.jsx'))
+const ServiceDesk = lazy(() => import('./service-desk/ServiceDesk.jsx'))
+const WorkflowAnalytics = lazy(() => import('./workflows/WorkflowAnalytics.jsx'))
+
 function App() {
   return (
     <Suspense fallback={
@@ -87,6 +98,16 @@ function App() {
           <Route path="academic/question-bank" element={<QuestionBank />} />
           <Route path="academic/approvals" element={<ApprovalWorkflow />} />
           <Route path="academic/analytics" element={<AnalyticsCoverage />} />
+          {/* Workflow Automation Engine */}
+          <Route path="workflows/designer" element={<WorkflowDesigner />} />
+          <Route path="workflows/approvals" element={<ApprovalCenter />} />
+          <Route path="workflows/escalations" element={<EscalationMatrix />} />
+          <Route path="workflows/sla" element={<SLAManagement />} />
+          <Route path="workflows/tasks" element={<TaskManagement />} />
+          <Route path="workflows/notifications" element={<NotificationCenter />} />
+          <Route path="workflows/cases" element={<CaseManagement />} />
+          <Route path="workflows/service-desk" element={<ServiceDesk />} />
+          <Route path="workflows/analytics" element={<WorkflowAnalytics />} />
         </Route>
       </Routes>
     </Suspense>

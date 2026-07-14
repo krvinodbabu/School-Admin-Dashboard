@@ -34,7 +34,9 @@ import {
   HelpCircle,
   Shield,
   Activity,
-  Layers
+  Layers,
+  GitBranch,
+  Clock
 } from 'lucide-react'
 
 // Dynamic mapping of links to their parent operating system modules & required permissions
@@ -144,6 +146,22 @@ const tenantSection = {
     { to: '/platform/cross-analytics', label: 'Cross-Campus Analytics', icon: BarChart3, permission: 'audit.view' },
     { to: '/platform/explorer', label: 'Organization Explorer', icon: Layers, permission: 'rbac.view' },
     { to: '/platform/communication', label: 'Multi-Campus Notice', icon: Bell, permission: 'notifications.send' }
+  ]
+}
+
+// Standalone Workflow Engine links
+const workflowSection = {
+  label: '⚙️ Workflows & Approvals',
+  items: [
+    { to: '/workflows/approvals', label: 'Approval Center', icon: GitPullRequestArrow, permission: 'lessonplan.approve' },
+    { to: '/workflows/tasks', label: 'Task Management', icon: ListChecks, permission: 'rbac.view' },
+    { to: '/workflows/cases', label: 'Case Management', icon: Briefcase, permission: 'rbac.view' },
+    { to: '/workflows/service-desk', label: 'Service Desk', icon: HelpCircle, permission: 'tickets.create' },
+    { to: '/workflows/designer', label: 'Workflow Designer', icon: GitBranch, permission: 'rbac.view' },
+    { to: '/workflows/escalations', label: 'Escalation Matrix', icon: Shield, permission: 'rbac.view' },
+    { to: '/workflows/sla', label: 'SLA Management', icon: Clock, permission: 'rbac.view' },
+    { to: '/workflows/notifications', label: 'Notification Hub', icon: Bell, permission: 'notifications.send' },
+    { to: '/workflows/analytics', label: 'Analytics', icon: BarChart3, permission: 'rbac.view' }
   ]
 }
 
@@ -265,6 +283,27 @@ export default function Sidebar({ isOpen, onClose }) {
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="sidebar__section-label">{tenantSection.label}</span>
                 {visibleTenantItems.map((item) => (
+                  <NavItem key={item.to} {...item} onClick={onClose} />
+                ))}
+              </div>
+            )
+          })()}
+
+          {/* Workflow Engine links */}
+          {(() => {
+            const visibleWorkflowItems = workflowSection.items.filter(item => {
+              if (item.permission && !hasPermission(item.permission)) {
+                return false
+              }
+              return true
+            })
+
+            if (visibleWorkflowItems.length === 0) return null
+
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span className="sidebar__section-label">{workflowSection.label}</span>
+                {visibleWorkflowItems.map((item) => (
                   <NavItem key={item.to} {...item} onClick={onClose} />
                 ))}
               </div>
