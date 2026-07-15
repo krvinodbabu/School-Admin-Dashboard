@@ -15,7 +15,7 @@ const AnalyticsSelector = lazy(() => import('./analytics/AnalyticsSelector.jsx')
 const CommandCenter = lazy(() => import('./executive/CommandCenter.jsx'))
 
 /* Enterprise Reporting Desk */
-const EnterpriseReports = lazy(() => import('./reports/EnterpriseReports.jsx'))
+const SelfServicePortal = lazy(() => import('./reports/core/SelfServicePortal.jsx'))
 const ReportBuilder = lazy(() => import('./report-builder/ReportBuilder.jsx'))
 const ComplianceDashboard = lazy(() => import('./report-templates/ComplianceDashboard.jsx'))
 
@@ -129,7 +129,7 @@ function App() {
             <Route path="executive/command-center" element={<CommandCenter />} />
 
             {/* Custom Reporting and builder portals */}
-            <Route path="reports/enterprise" element={<EnterpriseReports />} />
+            <Route path="reports/enterprise" element={<SelfServicePortal />} />
             <Route path="reports/builder" element={<ReportBuilder />} />
             <Route path="reports/compliance" element={<ComplianceDashboard />} />
 
