@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from '../components/Sidebar.jsx'
 import TopNav from '../components/TopNav.jsx'
@@ -7,6 +7,7 @@ import { useTenant } from '../context/TenantContext.jsx'
 import OnboardingWizard from '../onboarding/OnboardingWizard.jsx'
 import CopilotPanel from '../copilot/CopilotPanel.jsx'
 import RoleSwitcher from '../roles/RoleSwitcher.jsx'
+import CommandPalette from '../components/CommandPalette.jsx'
 
 const pageTitles = {
   '/': 'Dashboard',
@@ -47,9 +48,32 @@ const pageTitles = {
 
 export default function MainLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [paletteOpen, setPaletteOpen] = useState(false)
   const { isWizardCompleted } = useTenant()
   const location = useLocation()
   const title = pageTitles[location.pathname] || 'School Admin'
+
+  // Open palette listener
+  useEffect(() => {
+    const handleOpenPalette = () => setPaletteOpen(true)
+    window.addEventListener('eduos_open_command_palette', handleOpenPalette)
+    return () => window.removeEventListener('eduos_open_command_palette', handleOpenPalette)
+  }, [])
+
+  // Page tracking for Recents
+  useEffect(() => {
+    const currentPath = location.pathname
+    const currentTitle = pageTitles[currentPath] || 'Campus Page'
+    if (currentPath !== '/login' && currentPath !== '/403') {
+      const saved = localStorage.getItem('eduos_recent_activity')
+      let list = saved ? JSON.parse(saved) : []
+      list = list.filter(item => item.to !== currentPath)
+      list.unshift({ to: currentPath, label: currentTitle })
+      list = list.slice(0, 4) // Keep top 4
+      localStorage.setItem('eduos_recent_activity', JSON.stringify(list))
+      window.dispatchEvent(new Event('eduos_navigation_change'))
+    }
+  }, [location])
 
   if (!isWizardCompleted) {
     return <OnboardingWizard />
@@ -66,6 +90,7 @@ export default function MainLayout() {
       </div>
       <CopilotPanel />
       <RoleSwitcher />
+      <CommandPalette isOpen={paletteOpen} onClose={() => setPaletteOpen(false)} />
     </div>
   )
 }

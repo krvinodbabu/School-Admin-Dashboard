@@ -1,237 +1,26 @@
 /**
- * Sidebar navigation — dynamically filtered based on active modules, roles, and campus configurations.
+ * Simplified Minimal Sidebar navigation matching premium enterprise patterns.
  */
+import { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useEduOS } from '../core/EduOSContext.jsx'
 import { useRBAC } from '../rbac/RBACContext.jsx'
 import { useTenant } from '../context/TenantContext.jsx'
 import {
   LayoutDashboard,
-  GraduationCap,
-  Users,
-  Wallet,
-  School,
-  ClipboardCheck,
-  FileText,
-  Calendar,
-  BookOpen,
-  Bell,
-  Settings,
-  Trophy,
-  X,
-  ChevronUp,
-  NotebookPen,
-  CalendarRange,
-  ListChecks,
-  Database,
-  GitPullRequestArrow,
+  Search,
   BarChart3,
-  UserPlus,
-  Briefcase,
-  Bus,
-  CalendarDays,
-  Building,
-  HelpCircle,
+  School,
   Shield,
-  Activity,
-  Layers,
-  GitBranch,
+  Settings,
+  Bell,
+  Star,
   Clock,
-  Sparkles,
-  Brain,
-  Compass,
-  Award,
-  Cpu,
-  Eye,
-  Target
+  HelpCircle,
+  Users,
+  X,
+  ChevronUp
 } from 'lucide-react'
-
-// Dynamic mapping of links to their parent operating system modules & required permissions
-const moduleSections = [
-  {
-    module: 'Academics',
-    label: '📚 Academic Management',
-    items: [
-      { to: '/students', label: 'Students', icon: GraduationCap, permission: 'student.view' },
-      { to: '/teachers', label: 'Teachers', icon: Users, permission: 'teacher.view' },
-      { to: '/classes', label: 'Classes & Sections', icon: School, permission: 'student.view' },
-      { to: '/attendance', label: 'Attendance', icon: ClipboardCheck, permission: 'student.view' },
-      { to: '/exams', label: 'Exams & Results', icon: FileText, permission: 'student.view' },
-      { to: '/timetable', label: 'Timetable', icon: Calendar, permission: 'student.view' },
-      { to: '/academic/lesson-plans', label: 'Lesson Plans', icon: NotebookPen, permission: 'lessonplan.create' },
-      { to: '/academic/syllabus', label: 'Syllabus Planner', icon: CalendarRange, permission: 'lessonplan.create' },
-      { to: '/academic/assessments', label: 'Assessments', icon: ListChecks, permission: 'assessment.create' },
-      { to: '/academic/question-bank', label: 'Question Bank', icon: Database, permission: 'assessment.create' },
-      { to: '/academic/approvals', label: 'Approvals', icon: GitPullRequestArrow, permission: 'lessonplan.approve' },
-    ]
-  },
-  {
-    module: 'Admissions',
-    label: '🎯 Admissions',
-    items: [
-      { to: '/admissions', label: 'Admissions Intake', icon: UserPlus, permission: 'student.create' }
-    ]
-  },
-  {
-    module: 'Finance',
-    label: '💼 Finance & Billing',
-    items: [
-      { to: '/fees', label: 'Fees Management', icon: Wallet, permission: 'fees.view' }
-    ]
-  },
-  {
-    module: 'HR',
-    label: '👥 Human Resources',
-    items: [
-      { to: '/hr', label: 'Staff Directory', icon: Briefcase, permission: 'teacher.create' }
-    ]
-  },
-  {
-    module: 'Transport',
-    label: '🚌 Transport',
-    items: [
-      { to: '/transport', label: 'Bus Routing', icon: Bus, permission: 'transport.view' }
-    ]
-  },
-  {
-    module: 'Events',
-    label: '🗓️ Events',
-    items: [
-      { to: '/events', label: 'School Events', icon: CalendarDays, permission: 'circulars.publish' }
-    ]
-  },
-  {
-    module: 'Sports',
-    label: '🏆 Sports',
-    items: [
-      { to: '/sports', label: 'Sports Activities', icon: Trophy, permission: 'notifications.send' }
-    ]
-  },
-  {
-    module: 'Facilities',
-    label: '🏢 Facilities',
-    items: [
-      { to: '/library', label: 'Library Management', icon: BookOpen, permission: 'student.view' }
-    ]
-  },
-  {
-    module: 'Support',
-    label: '🛠️ Helpdesk & Support',
-    items: [
-      { to: '/support', label: 'Help Desk', icon: HelpCircle, permission: 'tickets.create' }
-    ]
-  },
-  {
-    module: 'Communication',
-    label: '🔔 Communication',
-    items: [
-      { to: '/notifications', label: 'Notifications', icon: Bell, permission: 'notifications.send' }
-    ]
-  },
-  {
-    module: 'Analytics',
-    label: '📊 Analytics Desk',
-    items: [
-      { to: '/academic/analytics', label: 'Analytics & Coverage', icon: BarChart3, permission: 'lessonplan.approve' }
-    ]
-  },
-  {
-    module: 'Settings',
-    label: '⚙️ Settings',
-    items: [
-      { to: '/settings', label: 'System Settings', icon: Settings }
-    ]
-  }
-]
-
-// Standalone Tenant & Campus administrative links
-const tenantSection = {
-  label: '🏢 Tenant & Campus',
-  items: [
-    { to: '/platform/campuses', label: 'Campus Management', icon: Building, permission: 'rbac.view' },
-    { to: '/platform/departments', label: 'Departments', icon: School, permission: 'rbac.view' },
-    { to: '/platform/cross-analytics', label: 'Cross-Campus Analytics', icon: BarChart3, permission: 'audit.view' },
-    { to: '/platform/explorer', label: 'Organization Explorer', icon: Layers, permission: 'rbac.view' },
-    { to: '/platform/communication', label: 'Multi-Campus Notice', icon: Bell, permission: 'notifications.send' }
-  ]
-}
-
-// Standalone Workflow Engine links
-const workflowSection = {
-  label: '⚙️ Workflows & Approvals',
-  items: [
-    { to: '/workflows/approvals', label: 'Approval Center', icon: GitPullRequestArrow, permission: 'lessonplan.approve' },
-    { to: '/workflows/tasks', label: 'Task Management', icon: ListChecks, permission: 'rbac.view' },
-    { to: '/workflows/cases', label: 'Case Management', icon: Briefcase, permission: 'rbac.view' },
-    { to: '/workflows/service-desk', label: 'Service Desk', icon: HelpCircle, permission: 'tickets.create' },
-    { to: '/workflows/designer', label: 'Workflow Designer', icon: GitBranch, permission: 'rbac.view' },
-    { to: '/workflows/escalations', label: 'Escalation Matrix', icon: Shield, permission: 'rbac.view' },
-    { to: '/workflows/sla', label: 'SLA Management', icon: Clock, permission: 'rbac.view' },
-    { to: '/workflows/notifications', label: 'Notification Hub', icon: Bell, permission: 'notifications.send' },
-    { to: '/workflows/analytics', label: 'Analytics', icon: BarChart3, permission: 'rbac.view' }
-  ]
-}
-
-// AI Copilot & Intelligence links
-const aiSection = {
-  label: '🤖 AI & Intelligence',
-  items: [
-    { to: '/executive/command-center', label: 'Command Center', icon: Activity, permission: 'rbac.view' },
-    { to: '/ai/teacher-copilot', label: 'Teacher Copilot', icon: Sparkles, permission: 'lessonplan.create' },
-    { to: '/ai/parent-copilot', label: 'Parent Copilot', icon: Users, permission: 'student.view' },
-    { to: '/ai/learning-intelligence', label: 'Learning Intelligence', icon: Brain, permission: 'student.view' },
-    { to: '/ai/management', label: 'Management AI', icon: BarChart3, permission: 'audit.view' },
-    { to: '/ai/governance', label: 'AI Governance', icon: Eye, permission: 'rbac.view' },
-  ]
-}
-
-// Learning & Development links
-const learningSection = {
-  label: '🎓 Learning & Development',
-  items: [
-    { to: '/student/success', label: 'Student Success', icon: GraduationCap, permission: 'student.view' },
-    { to: '/wellness/portal', label: 'Wellness & Safety', icon: Activity, permission: 'student.view' },
-    { to: '/alumni/network', label: 'Alumni Network', icon: Users, permission: 'student.view' },
-    { to: '/analytics/role-desk', label: 'Analytics Desk', icon: BarChart3, permission: 'student.view' },
-    { to: '/ai/competencies', label: 'Competency Tracker', icon: Target, permission: 'student.view' },
-    { to: '/ai/outcomes', label: 'Outcome Tracker', icon: Layers, permission: 'student.view' },
-    { to: '/ai/portfolio', label: 'Digital Portfolio', icon: FileText, permission: 'student.view' },
-    { to: '/ai/credentials', label: 'Micro Credentials', icon: Award, permission: 'student.view' },
-    { to: '/ai/career-guidance', label: 'Career Guidance', icon: Compass, permission: 'student.view' },
-  ]
-}
-
-// Future Campus links
-const futureCampusSection = {
-  label: '🚀 Future Campus',
-  items: [
-    { to: '/ai/future-campus', label: 'Integration Readiness', icon: Cpu, permission: 'rbac.view' },
-    { to: '/sustainability/esg', label: 'Sustainability ESG', icon: Layers, permission: 'rbac.view' },
-    { to: '/global/education', label: 'Global Education', icon: Compass, permission: 'rbac.view' },
-    { to: '/smart-campus/iot', label: 'Smart Campus IoT', icon: Cpu, permission: 'rbac.view' },
-  ]
-}
-
-// Standalone Reporting Desk links
-const reportingSection = {
-  label: '📈 Reporting & Intelligence',
-  items: [
-    { to: '/reports/enterprise', label: 'Enterprise Reports', icon: FileText, permission: 'reports.view' },
-    { to: '/reports/builder', label: 'Report Builder', icon: Settings, permission: 'rbac.view' },
-    { to: '/reports/compliance', label: 'Board Compliance', icon: Shield, permission: 'rbac.view' }
-  ]
-}
-
-// Standalone System Control Links visible only to RBAC managers
-const securitySection = {
-  label: '🛡️ Security & Control',
-  items: [
-    { to: '/system/access', label: 'Access Control Matrix', icon: Shield, permission: 'rbac.view' },
-    { to: '/system/audit', label: 'Audit Trail Log', icon: FileText, permission: 'audit.view' },
-    { to: '/system/roles', label: 'Role Catalogue', icon: Shield, permission: 'rbac.view' },
-    { to: '/system/privileges', label: 'Privilege Matrix', icon: Layers, permission: 'rbac.view' }
-  ]
-}
 
 function NavItem({ to, label, icon: Icon, end, onClick }) {
   return (
@@ -252,14 +41,30 @@ function NavItem({ to, label, icon: Icon, end, onClick }) {
 }
 
 export default function Sidebar({ isOpen, onClose }) {
-  const { modules, institution, currentRole } = useEduOS()
+  const { currentRole, institution } = useEduOS()
   const { hasPermission } = useRBAC()
   const { activeInstitution, activeCampus, activeAcademicYear } = useTenant()
 
-  // Helper to check if a specific module name is enabled
-  const isModuleEnabled = (moduleName) => {
-    const target = modules.find(m => m.name === moduleName)
-    return target ? target.enabled : false
+  // State trackers for Favorites and Recent Activity
+  const [favorites, setFavorites] = useState([])
+  const [recentActivity, setRecentActivity] = useState([])
+
+  const loadNavStats = () => {
+    const favs = localStorage.getItem('eduos_favorites')
+    const recents = localStorage.getItem('eduos_recent_activity')
+    setFavorites(favs ? JSON.parse(favs) : [])
+    setRecentActivity(recents ? JSON.parse(recents) : [])
+  }
+
+  useEffect(() => {
+    loadNavStats()
+    window.addEventListener('eduos_navigation_change', loadNavStats)
+    return () => window.removeEventListener('eduos_navigation_change', loadNavStats)
+  }, [])
+
+  const triggerGlobalSearch = () => {
+    window.dispatchEvent(new Event('eduos_open_command_palette'))
+    onClose()
   }
 
   return (
@@ -297,155 +102,76 @@ export default function Sidebar({ isOpen, onClose }) {
         </div>
 
         {/* Nav items */}
-        <nav className="sidebar__nav-scroll" aria-label="Site navigation">
-          {/* Always enabled Dashboard link */}
-          <span className="sidebar__section-label">Main Menu</span>
-          <NavItem to="/" label="Dashboard" icon={LayoutDashboard} end={true} onClick={onClose} />
+        <nav className="sidebar__nav-scroll" aria-label="Site navigation" style={{ paddingBottom: '2rem' }}>
+          
+          <span className="sidebar__section-label">Main Console</span>
+          <NavItem to="/" label="Home Dashboard" icon={LayoutDashboard} end={true} onClick={onClose} />
+          
+          <button 
+            type="button" 
+            className="sidebar__link" 
+            onClick={triggerGlobalSearch}
+            style={{ width: '100%', border: 'none', background: 'none', textAlign: 'left', cursor: 'pointer' }}
+          >
+            <span className="sidebar__link-icon"><Search size={18} /></span>
+            <span>Global Search</span>
+            <span style={{ marginLeft: 'auto', fontSize: '0.68rem', opacity: 0.7, background: 'var(--color-surface-3)', padding: '0.1rem 0.35rem', borderRadius: '4px' }}>Ctrl+K</span>
+          </button>
 
-          {/* Dynamically generated sections based on enabled modules & permissions */}
-          {moduleSections.map(section => {
-            if (!isModuleEnabled(section.module)) return null
-            
-            // Filter section items based on permission
-            const visibleItems = section.items.filter(item => {
-              if (item.permission && !hasPermission(item.permission)) {
-                return false
-              }
-              return true
-            })
+          {/* Reports Console */}
+          {hasPermission('reports.view') && (
+            <NavItem to="/reports/enterprise" label="Reports & Analytics" icon={BarChart3} onClick={onClose} />
+          )}
 
-            // If no items are visible under this section, hide the section entirely
-            if (visibleItems.length === 0) return null
+          {/* Institution Management */}
+          {hasPermission('rbac.view') && (
+            <NavItem to="/platform/campuses" label="Institution Management" icon={School} onClick={onClose} />
+          )}
 
-            return (
-              <div key={section.module} style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="sidebar__section-label">{section.label}</span>
-                {visibleItems.map((item) => (
-                  <NavItem key={item.to} {...item} onClick={onClose} />
-                ))}
-              </div>
-            )
-          })}
+          {/* User & Access Control */}
+          {hasPermission('rbac.view') && (
+            <NavItem to="/system/access" label="User & Access Matrix" icon={Shield} onClick={onClose} />
+          )}
 
-          {/* Tenant & Campus administrative links */}
-          {(() => {
-            const visibleTenantItems = tenantSection.items.filter(item => {
-              if (item.permission && !hasPermission(item.permission)) {
-                return false
-              }
-              return true
-            })
+          {/* Administration Controls */}
+          {hasPermission('rbac.view') && (
+            <NavItem to="/settings" label="Administration" icon={Settings} onClick={onClose} />
+          )}
 
-            if (visibleTenantItems.length === 0) return null
+          {/* Notifications */}
+          <NavItem to="/notifications" label="Notifications Hub" icon={Bell} onClick={onClose} />
 
-            return (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="sidebar__section-label">{tenantSection.label}</span>
-                {visibleTenantItems.map((item) => (
-                  <NavItem key={item.to} {...item} onClick={onClose} />
-                ))}
-              </div>
-            )
-          })()}
+          {/* Profile */}
+          <NavItem to="/profile" label="My Profile" icon={Users} onClick={onClose} />
 
-          {/* Workflow Engine links */}
-          {(() => {
-            const visibleWorkflowItems = workflowSection.items.filter(item => {
-              if (item.permission && !hasPermission(item.permission)) {
-                return false
-              }
-              return true
-            })
+          {/* Favorites (Dynamic list) */}
+          {favorites.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', marginTop: '1rem' }}>
+              <span className="sidebar__section-label" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <Star size={12} style={{ fill: 'var(--color-primary)' }} /> Favorites
+              </span>
+              {favorites.map((fav, i) => (
+                <NavItem key={i} to={fav.to} label={fav.label} icon={Star} onClick={onClose} />
+              ))}
+            </div>
+          )}
 
-            if (visibleWorkflowItems.length === 0) return null
+          {/* Recent Activity (Dynamic list) */}
+          {recentActivity.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', marginTop: '1rem' }}>
+              <span className="sidebar__section-label" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <Clock size={12} /> Recents
+              </span>
+              {recentActivity.map((rec, i) => (
+                <NavItem key={i} to={rec.to} label={rec.label} icon={Clock} onClick={onClose} />
+              ))}
+            </div>
+          )}
 
-            return (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="sidebar__section-label">{workflowSection.label}</span>
-                {visibleWorkflowItems.map((item) => (
-                  <NavItem key={item.to} {...item} onClick={onClose} />
-                ))}
-              </div>
-            )
-          })()}
+          {/* System Help */}
+          <span className="sidebar__section-label">Support</span>
+          <NavItem to="/support" label="Help & Support" icon={HelpCircle} onClick={onClose} />
 
-          {/* Platform Security controls */}
-          {(() => {
-            const visibleSecurityItems = securitySection.items.filter(item => {
-              if (item.permission && !hasPermission(item.permission)) {
-                return false
-              }
-              return true
-            })
-
-            if (visibleSecurityItems.length === 0) return null
-
-            return (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="sidebar__section-label">{securitySection.label}</span>
-                {visibleSecurityItems.map((item) => (
-                  <NavItem key={item.to} {...item} onClick={onClose} />
-                ))}
-              </div>
-            )
-          })()}
-
-          {/* Platform Reporting controls */}
-          {(() => {
-            const visibleReportItems = reportingSection.items.filter(item => {
-              if (item.permission && !hasPermission(item.permission)) {
-                return false
-              }
-              return true
-            })
-
-            if (visibleReportItems.length === 0) return null
-
-            return (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="sidebar__section-label">{reportingSection.label}</span>
-                {visibleReportItems.map((item) => (
-                  <NavItem key={item.to} {...item} onClick={onClose} />
-                ))}
-              </div>
-            )
-          })()}
-
-          {/* AI & Intelligence links */}
-          {(() => {
-            const items = aiSection.items.filter(item => !item.permission || hasPermission(item.permission))
-            if (items.length === 0) return null
-            return (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="sidebar__section-label">{aiSection.label}</span>
-                {items.map((item) => <NavItem key={item.to} {...item} onClick={onClose} />)}
-              </div>
-            )
-          })()}
-
-          {/* Learning & Development links */}
-          {(() => {
-            const items = learningSection.items.filter(item => !item.permission || hasPermission(item.permission))
-            if (items.length === 0) return null
-            return (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="sidebar__section-label">{learningSection.label}</span>
-                {items.map((item) => <NavItem key={item.to} {...item} onClick={onClose} />)}
-              </div>
-            )
-          })()}
-
-          {/* Future Campus links */}
-          {(() => {
-            const items = futureCampusSection.items.filter(item => !item.permission || hasPermission(item.permission))
-            if (items.length === 0) return null
-            return (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="sidebar__section-label">{futureCampusSection.label}</span>
-                {items.map((item) => <NavItem key={item.to} {...item} onClick={onClose} />)}
-              </div>
-            )
-          })()}
         </nav>
 
         {/* User profile footer showing currently switched persona */}
