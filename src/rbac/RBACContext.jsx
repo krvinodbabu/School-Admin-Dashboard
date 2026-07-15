@@ -39,6 +39,9 @@ export function RBACProvider({ children }) {
     if (activePerms.includes('*')) {
       return true // Wildcard Principal access
     }
+    if (permissionKey === 'reports.view') {
+      return activePerms.some(p => p.startsWith('reports.'))
+    }
     return activePerms.includes(permissionKey)
   }
 

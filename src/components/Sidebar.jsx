@@ -216,7 +216,7 @@ const futureCampusSection = {
 const reportingSection = {
   label: '📈 Reporting & Intelligence',
   items: [
-    { to: '/reports/enterprise', label: 'Enterprise Reports', icon: FileText, permission: 'rbac.view' },
+    { to: '/reports/enterprise', label: 'Enterprise Reports', icon: FileText, permission: 'reports.view' },
     { to: '/reports/builder', label: 'Report Builder', icon: Settings, permission: 'rbac.view' },
     { to: '/reports/compliance', label: 'Board Compliance', icon: Shield, permission: 'rbac.view' }
   ]

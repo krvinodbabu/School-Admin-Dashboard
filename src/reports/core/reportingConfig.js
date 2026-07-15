@@ -1,154 +1,292 @@
-import { ACADEMIC_REPORTS_LIST } from '../academic/academicReports.js'
-import { FINANCE_REPORTS_LIST } from '../finance/financeReports.js'
+// Reporting engine configuration mapping permissions, layouts, and mock datasets.
 
 export const DEPARTMENT_REPORTS = {
   'Academic': {
     label: 'Academic Faculty Reports',
     reports: [
-      ...ACADEMIC_REPORTS_LIST,
-      { id: 'acad-outcomes', name: 'Outcome Based Attainment', desc: 'Syllabus mastery tracking logs.' },
-      { id: 'acad-risk', name: 'Student Academic Risk Predictor', desc: 'At-risk performance tracking.' }
+      { id: 'acad-attend', name: 'Attendance Summary', desc: 'Syllabus and student attendance trends.' },
+      { id: 'acad-perf', name: 'Class Performance', desc: 'Average academic scoring metrics.' },
+      { id: 'acad-subj', name: 'Subject Performance', desc: 'Subject mastery analysis.' },
+      { id: 'acad-assign', name: 'Assignment Completion', desc: 'Homework and worksheet metrics.' },
+      { id: 'acad-assess', name: 'Assessment Analytics', desc: 'Test scores and grade distributions.' },
+      { id: 'acad-outcomes', name: 'Learning Outcomes', desc: 'NEP 2020 competency attainment.' },
+      { id: 'acad-comp', name: 'Competency Coverage', desc: 'Curriculum milestones.' },
+      { id: 'acad-lesson', name: 'Lesson Plan Completion', desc: 'Syllabus coverage progress.' },
+      { id: 'acad-risk', name: 'Student Risk Reports', desc: 'At-risk performance alert indicators.' }
     ]
   },
   'Finance': {
     label: 'Finance & Treasury Reports',
     reports: [
-      ...FINANCE_REPORTS_LIST,
-      { id: 'fin-forecast', name: 'Revenue & Collection Projections', desc: 'Fee forecasting simulator.' }
+      { id: 'fin-collect', name: 'Fee Collection', desc: 'Real-time tuition fee collections.' },
+      { id: 'fin-outstanding', name: 'Outstanding Fees', desc: 'Defaulters ledger and alerts.' },
+      { id: 'fin-daily', name: 'Daily Collection', desc: 'Cash and online receipt totals.' },
+      { id: 'fin-monthly', name: 'Monthly Collection', desc: 'Monthly accounting summaries.' },
+      { id: 'fin-scholarship', name: 'Scholarship Reports', desc: 'Disbursements and concessions.' },
+      { id: 'fin-payroll', name: 'Payroll Reports', desc: 'Salary distributions.' },
+      { id: 'fin-vendor', name: 'Vendor Payments', desc: 'Contractor invoices.' },
+      { id: 'fin-budget', name: 'Budget Reports', desc: 'Departmental allocations.' },
+      { id: 'fin-forecast', name: 'Revenue Forecast', desc: 'Collection projection models.' }
     ]
   },
-  'HR & Operations': {
-    label: 'HR & Administrative Reports',
+  'HR': {
+    label: 'HR & Operations Reports',
     reports: [
-      { id: 'hr-recruitment', name: 'Recruitment & Appraisals', desc: 'Staff hiring and evaluations.' },
-      { id: 'hr-attendance', name: 'Staff Attendance & Leaves Log', desc: 'Teacher attendance roster.' }
-    ]
-  },
-  'Admissions': {
-    label: 'Admissions CRM Reports',
-    reports: [
-      { id: 'adm-pipeline', name: 'Lead Pipeline & Conversion Funnel', desc: 'Acquisition campaigns results.' }
+      { id: 'hr-directory', name: 'Employee Directory', desc: 'Staff lists and contact databases.' },
+      { id: 'hr-leave', name: 'Leave Summary', desc: 'Leave requests and balance sheets.' },
+      { id: 'hr-attendance', name: 'Attendance Log', desc: 'Staff biometric login histories.' },
+      { id: 'hr-funnel', name: 'Recruitment Funnel', desc: 'Interview pipelines.' },
+      { id: 'hr-training', name: 'Training Completion', desc: 'PD program completions.' },
+      { id: 'hr-appraisal', name: 'Appraisal Reports', desc: 'Performance ratings.' },
+      { id: 'hr-attrition', name: 'Attrition Analysis', desc: 'Staff turnover metrics.' },
+      { id: 'hr-workforce', name: 'Workforce Planning', desc: 'Teacher-student ratio allocations.' }
     ]
   },
   'Transport': {
     label: 'Transport & Logistics Reports',
     reports: [
-      { id: 'trans-route', name: 'Route Optimization & Scorecards', desc: 'Bus routing delays logs.' }
+      { id: 'trans-route', name: 'Route Performance', desc: 'GPS delay lists.' },
+      { id: 'trans-alloc', name: 'Student Allocation', desc: 'Bus seats registry.' },
+      { id: 'trans-util', name: 'Vehicle Utilization', desc: 'Odometer and fuel tracking.' },
+      { id: 'trans-driver', name: 'Driver Attendance', desc: 'Biometric records.' },
+      { id: 'trans-delays', name: 'Delay Reports', desc: 'Traffic and breakdown logs.' },
+      { id: 'trans-incidents', name: 'Incident Reports', desc: 'Safety events logs.' }
     ]
   },
-  'Student Services': {
-    label: 'Sports, Events & Library Reports',
+  'Admissions': {
+    label: 'Admissions CRM Reports',
     reports: [
-      { id: 'sports-perf', name: 'Athlete Performance Profiles', desc: 'Ground allocations & injuries.' },
-      { id: 'events-budget', name: 'Events Registrations & Budgets', desc: 'Cultural and sports budgets.' },
-      { id: 'lib-issues', name: 'Library Issuances & Overdues', desc: 'Issued books details.' }
+      { id: 'adm-pipeline', name: 'Lead Pipeline', desc: 'Active enquiries.' },
+      { id: 'adm-status', name: 'Application Status', desc: 'Registration steps.' },
+      { id: 'adm-funnel', name: 'Conversion Funnel', desc: 'Prospect-to-student conversions.' },
+      { id: 'adm-campaign', name: 'Campaign Performance', desc: 'ROI of ads campaigns.' },
+      { id: 'adm-source', name: 'Source Analysis', desc: 'Referrals vs walk-ins.' },
+      { id: 'adm-forecast', name: 'Enrollment Forecast', desc: 'Estimated registrations.' }
     ]
   },
-  'Campus Infrastructure': {
-    label: 'Facilities, Hostels & Marketing Reports',
-    reports: [
-      { id: 'fac-maintenance', name: 'Facilities Maintenance Log', desc: 'Cleaning and asset usage.' },
-      { id: 'hostel-occupancy', name: 'Hostel Occupancy & Visitors', desc: 'Dorm allocations & logs.' },
-      { id: 'mkt-campaigns', name: 'Marketing Campaign Analytics', desc: 'Lead generation campaigns.' }
-    ]
-  },
-  'Platform Support': {
+  'Support': {
     label: 'IT Helpdesk Reports',
     reports: [
-      { id: 'supp-sla', name: 'Helpdesk SLA Compliances', desc: 'Open tickets & resolution times.' }
+      { id: 'supp-volume', name: 'Ticket Volume', desc: 'Inflow of student/staff tickets.' },
+      { id: 'supp-resolution', name: 'Resolution Times', desc: 'Avg time-to-close metrics.' },
+      { id: 'supp-sla', name: 'SLA Compliance', desc: 'Service-level targets achieved.' },
+      { id: 'supp-escalation', name: 'Escalation Trends', desc: 'Tickets routed to level-2 agents.' },
+      { id: 'supp-sat', name: 'User Satisfaction', desc: 'CSAT scores and feedback summaries.' }
+    ]
+  },
+  'Sports': {
+    label: 'Sports & Athletics Reports',
+    reports: [
+      { id: 'sports-part', name: 'Participation Reports', desc: 'Students active in clubs.' },
+      { id: 'sports-team', name: 'Team Performance', desc: 'Interschool tournament scores.' },
+      { id: 'sports-tourn', name: 'Tournament Statistics', desc: 'Medals tables and schedules.' },
+      { id: 'sports-attend', name: 'Training Attendance', desc: 'Morning drills trackers.' },
+      { id: 'sports-achieve', name: 'Achievement Reports', desc: 'National-level sport awards.' }
+    ]
+  },
+  'Events': {
+    label: 'School Events Reports',
+    reports: [
+      { id: 'ev-reg', name: 'Registrations', desc: 'Ticket bookings.' },
+      { id: 'ev-attend', name: 'Attendance', desc: 'Turnout metrics.' },
+      { id: 'ev-feedback', name: 'Feedback Analysis', desc: 'CSAT logs.' },
+      { id: 'ev-budget', name: 'Budget Utilization', desc: 'Event spending sheets.' },
+      { id: 'ev-volunteer', name: 'Volunteer Participation', desc: 'Student crew registries.' }
+    ]
+  },
+  'Facilities': {
+    label: 'Facilities & Assets Reports',
+    reports: [
+      { id: 'fac-maint', name: 'Maintenance Requests', desc: 'Plumbing, electrical tickets.' },
+      { id: 'fac-asset', name: 'Asset Usage', desc: 'Projector/smartboard lifecycle logs.' },
+      { id: 'fac-clean', name: 'Cleaning Schedules', desc: 'Sanitization verification sheets.' },
+      { id: 'fac-incidents', name: 'Facility Incidents', desc: 'Damage reports.' },
+      { id: 'fac-util', name: 'Utilization Metrics', desc: 'Auditorium booking rates.' }
+    ]
+  },
+  'Marketing': {
+    label: 'Marketing & Outreaches Reports',
+    reports: [
+      { id: 'mkt-campaign', name: 'Campaign Analytics', desc: 'Ad spend vs conversions.' },
+      { id: 'mkt-leads', name: 'Leads Generated', desc: 'Outreach pipelines.' },
+      { id: 'mkt-conversion', name: 'Conversion Rates', desc: 'Signup tracking.' },
+      { id: 'mkt-enquiry', name: 'Website Enquiries', desc: 'Organic contact form leads.' },
+      { id: 'mkt-social', name: 'Social Media Performance', desc: 'Impression growth statistics.' }
+    ]
+  },
+  'Library': {
+    label: 'Library & Catalog Reports',
+    reports: [
+      { id: 'lib-issued', name: 'Books Issued', desc: 'Active checkouts.' },
+      { id: 'lib-returns', name: 'Returns', desc: 'Daily check-ins.' },
+      { id: 'lib-overdue', name: 'Overdue Books', desc: 'Fine collections roster.' },
+      { id: 'lib-popular', name: 'Popular Categories', desc: 'Highly requested genres.' },
+      { id: 'lib-usage', name: 'Student Usage', desc: 'Study room bookings.' }
+    ]
+  },
+  'Hostel': {
+    label: 'Hostel & Residential Reports',
+    reports: [
+      { id: 'hostel-occupancy', name: 'Occupancy', desc: 'Room and bed allocations.' },
+      { id: 'hostel-visitors', name: 'Visitor Logs', desc: 'Parent check-ins.' },
+      { id: 'hostel-incidents', name: 'Incidents', desc: 'Curfew violations/illness logs.' },
+      { id: 'hostel-attend', name: 'Attendance', desc: 'Night roll call logs.' },
+      { id: 'hostel-room', name: 'Room Allocation', desc: 'Room inventories.' }
+    ]
+  },
+  'Parent Portal': {
+    label: 'Parent Portal Reports',
+    reports: [
+      { id: 'par-progress', name: 'Child Progress Report', desc: 'Subject averages vs topper.' },
+      { id: 'par-attend', name: 'Attendance Trends', desc: 'Monthly child attendance.' },
+      { id: 'par-fee', name: 'Fee Status', desc: 'Paid receipts and invoices.' },
+      { id: 'par-academic', name: 'Academic Trends', desc: 'Exam score graphs.' },
+      { id: 'par-behavior', name: 'Behavioral Reports', desc: 'Teacher remarks logs.' }
+    ]
+  },
+  'Student Workspace': {
+    label: 'Student Workspace Reports',
+    reports: [
+      { id: 'std-attend', name: 'Attendance Status', desc: 'Term requirements check.' },
+      { id: 'std-marks', name: 'Marks Sheet', desc: 'Unit tests & term results.' },
+      { id: 'std-assign', name: 'Assignments Status', desc: 'Completed vs pending tasks.' },
+      { id: 'std-comp', name: 'Competency Matrix', desc: 'Syllabus mastery levels.' },
+      { id: 'std-achieve', name: 'Achievements', desc: 'Extracurricular awards.' },
+      { id: 'std-certs', name: 'Certifications', desc: 'Course completions.' },
+      { id: 'std-portfolio', name: 'Academic Portfolio', desc: 'NEP credit banks.' }
     ]
   }
 }
 
-// Role-based reporting access mapping
+// Role report category mappings
 export const ROLE_REPORT_ACCESS = {
   'Principal': ['*'],
   'Platform Super Admin': ['*'],
   'System Administrator': ['*'],
   'Teacher': ['Academic'],
-  'Parent': ['Academic', 'Transport'], // Child records and bus details
+  'Parent': ['Parent Portal'],
+  'Student': ['Student Workspace'],
+  'Finance': ['Finance'],
   'Finance Administrator': ['Finance'],
-  'HR Manager': ['HR & Operations'],
-  'Admissions Officer': ['Admissions'],
+  'HR': ['HR'],
+  'HR Manager': ['HR'],
+  'Transport': ['Transport'],
   'Transport Manager': ['Transport'],
-  'Sports Director': ['Student Services'],
-  'Support Agent': ['Platform Support']
+  'Admissions': ['Admissions'],
+  'Admissions Officer': ['Admissions'],
+  'Event Management': ['Events'],
+  'Event Organizer': ['Events'],
+  'Sports Department': ['Sports'],
+  'Sports Director': ['Sports'],
+  'Housekeeping': ['Facilities'],
+  'Facilities Head': ['Facilities'],
+  'Marketing': ['Marketing'],
+  'Marketing Specialist': ['Marketing'],
+  'Software Support': ['Support'],
+  'Support Agent': ['Support'],
+  'Librarian': ['Library'],
+  'Hostel Warden': ['Hostel']
 }
 
-// Structured Mock Report Contents
+// Indian educational datasets
 export const STRUCTURED_REPORTS_CONTENT = {
   'acad-attend': {
-    scope: 'Koramangala, Dwarka, Adyar campuses (AY 2025-26 Term 1)',
-    summary: 'Institution attendance improved by 4.5% overall.',
-    analysis: 'Grade 9 student attendance fell below average (78%) in Math class.',
-    trends: 'Positive attendance correlation observed in days with lab activities.',
-    risks: '12 students flagged for attendance-related academic risk indices.',
-    recommendations: 'Automate push alerts to parent portals when attendance dips below 85%.',
-    action: 'Schedule parent-teacher conference for Grade 9 Section A.',
-    conclusion: 'Current attendance baseline is stable but Grade 9 requires intervention.',
+    scope: 'Green Valley Secondary Wing (AY 2025-26)',
+    summary: 'Overall pupil attendance in the academic term reached 91.2%, representing a minor increase from the previous cycle.',
+    analysis: 'Grade 9 Section B has witnessed a temporary slide in attendance, dropping to 76.5% during high-humidity weeks.',
+    trends: 'Attendance reaches its peak (97%) during practical exam weeks and scheduled science lab projects.',
+    risks: '14 students currently risk falling below the minimum CBSE mandate of 75%.',
+    recommendations: 'Trigger automated notification pings to parents via the Parent Portal when a student crosses three consecutive absences.',
+    action: 'Activate daily automated warnings for at-risk students.',
+    conclusion: 'General attendance ratios remain stable, though Grade 9 requires persistent mentoring.',
     kpis: [
-      { label: 'Avg Attendance', value: '94.2%', trend: '+0.5% MoM', type: 'good' },
-      { label: 'Grade 9 Average', value: '78.5%', trend: '-4.2% MoM', type: 'warn' },
-      { label: 'Parent Alerts Triggered', value: '45 Alerts', trend: 'Active SMS logs', type: 'info' }
+      { label: 'Secondary Avg', value: '91.2%', trend: '+0.8% MoM', type: 'good' },
+      { label: 'Grade 9 Wing', value: '76.5%', trend: '-3.1% MoM', type: 'warn' },
+      { label: 'CBSE Compliant', value: '88% Pupils', trend: 'Minimum 75%', type: 'info' }
     ],
     table: [
-      { name: 'Koramangala Grade 8', value: '95%', status: 'Stable' },
-      { name: 'Dwarka Grade 9', value: '78%', status: 'Review Needed' },
-      { name: 'Adyar Grade 10', value: '96%', status: 'Excellent' }
+      { name: 'Grade 8 Section A', value: '94% Attendance', status: 'Compliant' },
+      { name: 'Grade 9 Section B', value: '76.5% Attendance', status: 'Review Needed' },
+      { name: 'Grade 10 Section C', value: '95% Attendance', status: 'Compliant' }
     ],
     aiInsight: {
-      confidence: 94,
-      recommendation: 'Dwarka Campus Grade 9 attendance shows warning signs. Direct communication to parents will mitigate issues.',
-      action: 'Send WhatsApp alerts to Grade 9 Parents.'
+      confidence: 93,
+      recommendation: 'Targeted SMS push campaigns to guardians in Grade 9 can instantly lift turnout rates.',
+      action: 'Configure automated SMS outreach.'
     }
   },
   'fin-collect': {
-    scope: 'All Campuses outstanding tuition registry',
-    summary: 'Term 1 fee collection efficiency is at 94.1%.',
-    analysis: 'Dwarka Campus shows the largest amount of overdue fees (₹8.2 Lakhs).',
-    trends: 'Fee collection is up by 7% YoY due to UPI Autopay registrations.',
-    risks: '₹28.4 Lakhs currently overdue from tuition fee defaults.',
-    recommendations: 'Encourage enrollment in UPI Autopay program by offering a 1% cashback.',
-    action: 'Activate Auto-Reminders for overdue balances.',
-    conclusion: 'Fee collection pipeline is robust, but collection in Dwarka needs immediate reminders.',
+    scope: 'All Institutional Trust accounts (Green Valley Trust)',
+    summary: 'Tuition and bus fee collection balances stand at ₹4.85 Crore, meeting 92.4% of our Term-1 targets.',
+    analysis: 'Dwarka Campus reports an outstanding balance of ₹14.5 Lakhs, representing the largest regional ledger deficit.',
+    trends: 'Digital collections via UPI and NetBanking have grown by 35% MoM, replacing physical bank drafts.',
+    risks: '₹22.5 Lakhs currently sit in past-due brackets exceeding 90 days.',
+    recommendations: 'Introduce a 1.5% prompt-payment incentive for UPI transactions during the first 5 days of the academic term.',
+    action: 'Send automated invoice payment reminders via WhatsApp.',
+    conclusion: 'Liquid collections remain healthy, with digital payments optimizing ledger speed.',
     kpis: [
-      { label: 'Total Collected', value: '₹4.82 Cr', trend: '+14% MoM', type: 'good' },
-      { label: 'Outstanding Balance', value: '₹28.4 Lakhs', trend: '112 students default', type: 'warn' },
-      { label: 'UPI Autopay Users', value: '420 Users', trend: '+80 this month', type: 'good' }
+      { label: 'Net Collected', value: '₹4.85 Cr', trend: '92.4% Target', type: 'good' },
+      { label: 'Overdue Dues', value: '₹22.5 L', trend: '125 accounts', type: 'warn' },
+      { label: 'UPI Share', value: '72% Total', trend: '+35% MoM', type: 'good' }
     ],
     table: [
-      { name: 'Dwarka Campus', value: '₹8.2 Lakhs Overdue', status: 'Action Required' },
-      { name: 'Koramangala Campus', value: '₹3.1 Lakhs Overdue', status: 'Stable' },
-      { name: 'Adyar Campus', value: '₹1.5 Lakhs Overdue', status: 'Stable' }
+      { name: 'Green Valley Dwarka', value: '₹14.5 L Overdue', status: 'Action Required' },
+      { name: 'Green Valley Koramangala', value: '₹5.2 L Overdue', status: 'Stable' },
+      { name: 'Green Valley Adyar', value: '₹2.8 L Overdue', status: 'Stable' }
     ],
     aiInsight: {
-      confidence: 92,
-      recommendation: 'Enrolling late payers into UPI Autopay will reduce invoice default rate by 18% in Term 2.',
-      action: 'Email Autopay invite to pending invoice list.'
+      confidence: 95,
+      recommendation: 'Integrating Razorpay UPI Autopay channels can lower default indices by 22% in upcoming terms.',
+      action: 'Configure Razorpay UPI integrations.'
+    }
+  },
+  'hr-directory': {
+    scope: 'Institutional workforce rosters (Academic & Non-Academic)',
+    summary: 'Total headcount stands at 320 active members (180 Academic, 140 Support Staff).',
+    analysis: 'Our teacher-student ratio remains compliant with CBSE guidelines at 1:26.',
+    trends: 'Staff attendance matches 94.8% baseline metrics across the first quarter.',
+    risks: 'Five critical faculty roles in Senior Secondary Physics remain vacant.',
+    recommendations: 'Launch recruitment campaigns targeting retired CBSE mentors for short-term contracts.',
+    action: 'Post vacancies on specialized educational portals.',
+    conclusion: 'Staff ratios are healthy, though Senior Secondary STEM departments require swift hiring cycles.',
+    kpis: [
+      { label: 'Total Personnel', value: '320 Active', trend: 'Stable', type: 'good' },
+      { label: 'STEM Vacancies', value: '5 Roles', trend: 'Critical hiring', type: 'warn' },
+      { label: 'T-S Ratio', value: '1:26 Ratio', trend: 'CBSE Compliant', type: 'good' }
+    ],
+    table: [
+      { name: 'Senior Wing STEM', value: '88% Staffed', status: 'Action Required' },
+      { name: 'Primary Division', value: '100% Staffed', status: 'Optimal' },
+      { name: 'Support Operations', value: '96% Staffed', status: 'Stable' }
+    ],
+    aiInsight: {
+      confidence: 91,
+      recommendation: 'Temporary hiring of STEM contractors will prevent syllabus delay before term-end examinations.',
+      action: 'Initiate freelance contract interviews.'
     }
   }
 }
 
 export const FALLBACK_REPORT_CONTENT = {
-  scope: 'Default Report Scope (All Sectors)',
-  summary: 'Operational metrics are within optimal baseline values.',
-  analysis: 'All parameters healthy. No deviations detected.',
-  trends: 'Stable upward trend across current term quarters.',
-  risks: 'Low risk score. No immediate alerts flagged.',
-  recommendations: 'Perform routine quarterly audit audits.',
-  action: 'No manual intervention required.',
-  conclusion: 'Baseline operational stats are fully compliant.',
+  scope: 'Standard Department Workspace (Indian CBSE/ICSE Matrix)',
+  summary: 'All recorded operational data and student scoring baselines fit within scheduled compliance levels.',
+  analysis: 'Evaluated metrics represent normal academic behaviors. No critical outliers or policy violations identified.',
+  trends: 'A consistent upward performance curve (2.4% average growth) across the institutional metrics.',
+  risks: 'Operational risk assessment score: Low. No immediate remedies needed.',
+  recommendations: 'Maintain present parameters and schedule standard end-of-term audits.',
+  action: 'No manual intervention required at this stage.',
+  conclusion: 'Metrics are optimal. Continue standard operational workflows.',
   kpis: [
-    { label: 'Uptime Index', value: '99.9%', trend: 'Optimal', type: 'good' },
-    { label: 'Resource Load', value: '72%', trend: 'Normal', type: 'info' }
+    { label: 'Compliance Rate', value: '98.5%', trend: 'CBSE Compliant', type: 'good' },
+    { label: 'Operational Load', value: '68%', trend: 'Normal Range', type: 'info' }
   ],
   table: [
-    { name: 'Primary Division', value: 'Healthy', status: 'Compliant' },
-    { name: 'Secondary Division', value: 'Healthy', status: 'Compliant' }
+    { name: 'Primary Section', value: 'Healthy Score', status: 'Compliant' },
+    { name: 'Secondary Section', value: 'Healthy Score', status: 'Compliant' }
   ],
   aiInsight: {
-    confidence: 88,
-    recommendation: 'Maintain current configuration definitions.',
-    action: 'No changes required.'
+    confidence: 85,
+    recommendation: 'Baseline parameters remain fully balanced. Continue routine weekly data sweeps.',
+    action: 'No adjustment needed.'
   }
 }
